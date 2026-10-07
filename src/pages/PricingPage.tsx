@@ -60,7 +60,7 @@ export function PricingPage({
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0A266B] tracking-tight leading-tight">
-            Clear pricing for workforce accountability.
+            Simple pricing for your team.
           </h1>
 
           <p className="text-lg text-slate-600 leading-relaxed">
@@ -206,7 +206,7 @@ export function PricingPage({
                     <th className="py-3 px-4 text-right">
                       Price in {CURRENCIES[selectedCurrency].label}
                     </th>
-                    <th className="py-3 px-4 text-right">USD Reference</th>
+                    <th className="py-3 px-4 text-right">USD equivalent</th>
                     <th className="py-3 px-4 text-center">Action</th>
                   </tr>
                 </thead>
