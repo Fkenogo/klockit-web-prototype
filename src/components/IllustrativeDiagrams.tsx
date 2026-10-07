@@ -531,10 +531,10 @@ export function TwoMethodsInteractiveDiagram() {
   const [activeTab, setActiveTab] = useState<'phone-site-qr' | 'device-worker-qr' | 'phone-worker-ref' | 'device-worker-ref'>('phone-site-qr');
 
   const options = [
-    { id: 'phone-site-qr', label: 'Phone scans Site QR', method: 'QR code' },
+    { id: 'phone-site-qr', label: 'Worker scans Site QR on phone', method: 'QR code' },
     { id: 'device-worker-qr', label: 'Site device scans Worker QR', method: 'QR code' },
-    { id: 'phone-worker-ref', label: 'Worker enters Ref on phone', method: 'Manual Worker Ref' },
-    { id: 'device-worker-ref', label: 'Worker enters Ref on Site device', method: 'Manual Worker Ref' },
+    { id: 'phone-worker-ref', label: 'Worker enters Worker Ref on phone', method: 'Manual Worker Ref' },
+    { id: 'device-worker-ref', label: 'Worker enters Worker Ref on Site device', method: 'Manual Worker Ref' },
   ] as const;
 
   const active = options.find((option) => option.id === activeTab)!;
@@ -573,7 +573,7 @@ export function TwoMethodsInteractiveDiagram() {
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 lg:p-8">
       <div className="flex flex-col gap-4 pb-6 border-b border-slate-100">
         <div>
-          <h3 className="text-lg font-bold text-[#0A266B]">Two attendance methods. One clear record.</h3>
+          <h3 className="text-lg font-bold text-[#0A266B]">Two attendance paths. One unified record.</h3>
           <p className="text-sm text-slate-600 mt-0.5">
             Use QR code or Manual Worker Ref on a worker’s phone or a shared Site device.
           </p>
