@@ -16,7 +16,7 @@ export function ContactModal({ isOpen, onClose, defaultPlanName }: ContactModalP
     phone: '',
     organisation: '',
     workerCount: '200+',
-    useCase: 'Multi-site operational workforce',
+    useCase: 'Multiple work locations',
     notes: '',
   });
 
@@ -84,7 +84,7 @@ export function ContactModal({ isOpen, onClose, defaultPlanName }: ContactModalP
                 <span className="font-semibold text-slate-800">{formData.organisation}</span>
               </div>
               <div className="flex justify-between text-slate-600">
-                <span>Workforce scale:</span>
+                <span>Team size:</span>
                 <span className="font-semibold text-slate-800">{formData.workerCount} workers</span>
               </div>
               <div className="flex justify-between text-slate-600">
@@ -168,7 +168,7 @@ export function ContactModal({ isOpen, onClose, defaultPlanName }: ContactModalP
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Accounted Workers
+                  Number of workers
                 </label>
                 <select
                   value={formData.workerCount}
@@ -191,7 +191,7 @@ export function ContactModal({ isOpen, onClose, defaultPlanName }: ContactModalP
                   onChange={(e) => setFormData({ ...formData, useCase: e.target.value })}
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white"
                 >
-                  <option value="Multi-site operational workforce">Multi-Site Operations</option>
+                  <option value="Multiple work locations">Multi-Site Operations</option>
                   <option value="Construction project (fixed duration)">Construction Project</option>
                   <option value="Seasonal operations">Seasonal Operations</option>
                   <option value="Event or temporary deployment">Event / Temporary Deployment</option>
@@ -205,7 +205,7 @@ export function ContactModal({ isOpen, onClose, defaultPlanName }: ContactModalP
               </label>
               <textarea
                 rows={3}
-                placeholder="Mention number of sites, whether workers use personal smartphones or shared site tablets..."
+                placeholder="Tell us about your team size, work locations, or attendance setup..."
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white resize-none"
