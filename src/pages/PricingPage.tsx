@@ -292,7 +292,7 @@ export function PricingPage({
             The same Klockit product in every plan.
           </h2>
           <p className="text-sm text-slate-600 leading-relaxed">
-            All standard plans give your organisation the same core Klockit experience. Choose the band that matches your team size—higher tiers never lock out essential tools.
+            Every standard plan includes the same core Klockit product. Choose the price band that fits your team size.
           </p>
         </div>
 
@@ -346,7 +346,7 @@ export function PricingPage({
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-1">
               <strong className="text-slate-800">Over-band notice:</strong>
               <p>
-                If your team size exceeds your plan band, Klockit will notify your organisation. The new band takes effect from the next subscription period, so service is not interrupted immediately.
+                If your team grows into a higher plan band, we’ll let you know. The new price starts with your next subscription period.
               </p>
             </div>
           </div>
@@ -413,7 +413,7 @@ export function PricingPage({
               Do different standard plans include different features?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              No. Every standard plan includes the exact same Klockit product. The price is based solely on the number of Workers who have joined your organisation.
+              No. Every standard plan includes the same core Klockit product. The price is based on the number of workers in your organisation.
             </p>
           </div>
 
@@ -422,7 +422,7 @@ export function PricingPage({
               Do pending invitations count toward my plan?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              No. A Worker counts toward your plan only after they have completed onboarding and accepted their invitation. Pending invitations do not count toward your active band.
+              Choose the plan band that fits the number of workers in your organisation. You can adjust your plan as your team changes.
             </p>
           </div>
 
@@ -431,7 +431,7 @@ export function PricingPage({
               Does adding another Site change my price?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              No. Standard pricing is based strictly on Workers, not the number of Sites. You can add offices, workshops, project locations, or field points freely.
+              Your plan price is based on the number of workers in your organisation, not the number of Sites.
             </p>
           </div>
 
