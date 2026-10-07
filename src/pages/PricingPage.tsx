@@ -344,9 +344,9 @@ export function PricingPage({
               Choose a plan based on the number of workers in your organisation. Your plan price changes with your team size.
             </p>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-1">
-              <strong className="text-slate-800">Over-band notice:</strong>
+              <strong className="text-slate-800">Plan changes:</strong>
               <p>
-                If your team grows into a higher plan band, we’ll let you know. The new price starts with your next subscription period.
+                You can adjust your plan as your team changes. Any new price starts with your next subscription period.
               </p>
             </div>
           </div>
@@ -419,10 +419,10 @@ export function PricingPage({
 
           <div className="bg-white p-5 rounded-2xl border border-slate-200 space-y-1.5">
             <h4 className="font-bold text-sm text-[#0A266B]">
-              Do pending invitations count toward my plan?
+              Can I change plans as my team grows?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Choose the plan band that fits the number of workers in your organisation. You can adjust your plan as your team changes.
+              Yes. You can adjust your plan as your team changes. Any new price starts with your next subscription period.
             </p>
           </div>
 
@@ -440,7 +440,7 @@ export function PricingPage({
               What payment methods can I use?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Subscriptions are prepaid before the period begins. Payment options include Mobile Money, cards, and bank transfers. During the pilot, Klockit guides your organisation through a manual payment process after you choose to pay.
+              Subscriptions are prepaid before the period begins. Mobile Money, card and bank transfer payments will be available. During the pilot, we’ll guide you through the payment steps. You’ll receive a receipt and the date your next payment is due.
             </p>
           </div>
 
