@@ -25,11 +25,11 @@ export function Footer({ onNavigate, onOpenContactModal, onOpenTrialModal }: Foo
               <KlockitLogo variant="full" size="md" />
             </div>
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
-              Klockit helps organisations know who was at work by connecting expected work with recorded workforce-presence evidence and attendance history.
+              Klockit helps organisations see planned shifts alongside recorded arrivals, departures and attendance history.
             </p>
             <div className="flex items-center gap-2 text-xs text-slate-400 pt-1">
               <ShieldCheck size={16} className="text-[#00C2FF]" />
-              <span>Presence accountability · Not payroll · Not surveillance</span>
+              <span>Attendance records for your organisation and team</span>
             </div>
           </div>
 
@@ -81,7 +81,7 @@ export function Footer({ onNavigate, onOpenContactModal, onOpenTrialModal }: Foo
               Get Started & Talk to Us
             </h4>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Start an automatic 14-day trial for your organisation, or talk to our team for custom 200+ workforce bands, construction projects, and seasonal teams.
+              Start your organisation’s 14-day free trial, or talk to our team about plans for larger teams and fixed-duration projects.
             </p>
             <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
               <button
