@@ -150,7 +150,7 @@ export function IllustrativeRecordDiagram({ className = '' }: { className?: stri
             Who is at work today?
           </h3>
           <p className="text-[11px] text-slate-500 line-clamp-1">
-            Verified via Site QR or Worker QR card. Effective occurrence times.
+            Attendance records show planned shifts, arrivals and departures.
           </p>
         </div>
 
@@ -441,7 +441,7 @@ export function IllustrativeRecordDiagram({ className = '' }: { className?: stri
       <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2 text-[10px] text-slate-500 shrink-0">
         <span className="flex items-center gap-1 truncate">
           <ShieldCheck size={12} className="text-[#009FF5] shrink-0" />
-          <span className="truncate">Evidence kept as recorded · Corrections appended</span>
+          <span className="truncate">Attendance history</span>
         </span>
         <span className="font-semibold text-slate-700 shrink-0">
           ● 12 Sites
@@ -502,7 +502,7 @@ export function IllustrativeRecordDiagram({ className = '' }: { className?: stri
             </div>
 
             <div className="p-3 bg-sky-50/70 rounded-xl border border-sky-100 text-xs text-slate-700 space-y-1">
-              <div className="font-semibold text-[#0A266B]">Verification Evidence:</div>
+              <div className="font-semibold text-[#0A266B]">Attendance details:</div>
               <p>{inspectedWorker.details}</p>
               {inspectedWorker.contextNote && (
                 <div className="mt-2 pt-2 border-t border-sky-200/60 text-amber-900">
