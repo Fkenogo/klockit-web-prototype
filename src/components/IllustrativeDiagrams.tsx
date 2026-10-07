@@ -530,229 +530,120 @@ export function IllustrativeRecordDiagram({ className = '' }: { className?: stri
  * Method 2: Worker presents QR card to shared site tablet ("Not every worker needs a smartphone").
  */
 export function TwoMethodsInteractiveDiagram() {
-  const [activeTab, setActiveTab] = useState<'method1' | 'method2'>('method1');
+  const [activeTab, setActiveTab] = useState<'phone-site-qr' | 'device-worker-qr' | 'phone-worker-ref' | 'device-worker-ref'>('phone-site-qr');
+
+  const options = [
+    { id: 'phone-site-qr', label: 'Phone scans Site QR', method: 'QR code' },
+    { id: 'device-worker-qr', label: 'Site device scans Worker QR', method: 'QR code' },
+    { id: 'phone-worker-ref', label: 'Worker enters Ref on phone', method: 'Manual Worker Ref' },
+    { id: 'device-worker-ref', label: 'Worker enters Ref on Site device', method: 'Manual Worker Ref' },
+  ] as const;
+
+  const active = options.find((option) => option.id === activeTab)!;
+  const descriptions = {
+    'phone-site-qr': {
+      title: 'Worker scans the Site QR on their phone',
+      body: 'The worker uses their phone to scan the QR code displayed at the Site and record an arrival or departure.',
+      steps: ['Open Klockit on the worker’s phone.', 'Scan the Site QR code.', 'The attendance event is added to the organisation’s records.'],
+      device: 'Worker’s phone',
+      action: 'Scan Site QR',
+    },
+    'device-worker-qr': {
+      title: 'The Site device scans the Worker QR',
+      body: 'At a shared device, the worker presents their Worker QR for the device to scan when recording an arrival or departure.',
+      steps: ['Open the attendance screen on the shared Site device.', 'Scan the worker’s individual QR.', 'The attendance event is added to the organisation’s records.'],
+      device: 'Shared Site device',
+      action: 'Scan Worker QR',
+    },
+    'phone-worker-ref': {
+      title: 'Worker enters their Worker Ref on their phone',
+      body: 'A worker can enter their Worker Ref on their own phone. This entry needs approval before it is recorded as attendance.',
+      steps: ['Open Klockit on the worker’s phone.', 'Enter the Worker Ref.', 'An authorised person reviews and approves the entry.'],
+      device: 'Worker’s phone',
+      action: 'Enter Worker Ref',
+    },
+    'device-worker-ref': {
+      title: 'Worker enters their Worker Ref on the Site device',
+      body: 'A worker can enter their Worker Ref on a shared Site device. No additional approval is needed for this entry.',
+      steps: ['Open the attendance screen on the shared Site device.', 'Enter the Worker Ref.', 'The attendance event is added to the organisation’s records.'],
+      device: 'Shared Site device',
+      action: 'Enter Worker Ref',
+    },
+  }[activeTab];
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 lg:p-8">
-      {/* Segmented Control Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+      <div className="flex flex-col gap-4 pb-6 border-b border-slate-100">
         <div>
-          <h3 className="text-lg font-bold text-[#0A266B]">
-            Two attendance paths. One unified record.
-          </h3>
+          <h3 className="text-lg font-bold text-[#0A266B]">Two attendance methods. One clear record.</h3>
           <p className="text-sm text-slate-600 mt-0.5">
-            Flexible for tech-enabled staff and field workforces without personal smartphones.
+            Use QR code or Manual Worker Ref on a worker’s phone or a shared Site device.
           </p>
         </div>
-
-        {/* Tab switch buttons */}
-        <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl shrink-0">
-          <button
-            onClick={() => setActiveTab('method1')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-              activeTab === 'method1'
-                ? 'bg-white text-[#0A266B] shadow-2xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            1. Site QR (Worker Phone)
-          </button>
-          <button
-            onClick={() => setActiveTab('method2')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-              activeTab === 'method2'
-                ? 'bg-white text-[#0A266B] shadow-2xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            2. Worker QR Card (Shared Device)
-          </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          {options.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => setActiveTab(option.id)}
+              className={`px-3 py-2 text-xs font-semibold rounded-lg border transition-all text-left ${
+                activeTab === option.id
+                  ? 'bg-[#0A266B] text-white border-[#0A266B]'
+                  : 'bg-white text-slate-700 border-slate-200 hover:border-[#009FF5]'
+              }`}
+            >
+              <span className="block opacity-75 text-[10px]">{option.method}</span>
+              {option.label}
+            </button>
+          ))}
         </div>
       </div>
-
-      {/* Tab 1 Content: Site QR on Worker's Phone */}
-      {activeTab === 'method1' && (
-        <div className="pt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-6 space-y-4">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#009FF5]">
-              <Smartphone size={16} />
-              <span>Personal or Company Smartphone</span>
-            </div>
-            <h4 className="text-xl font-bold text-[#0A266B]">
-              Worker opens Klockit and scans the verified Site QR poster
-            </h4>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Ideal for workers who have their own smartphone. The organisation prints and displays the verified Site QR at the workplace entrance, workshop, or project gate.
-            </p>
-
-            <ul className="space-y-3 pt-2 text-xs text-slate-700">
-              <li className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded-full bg-sky-100 text-[#009FF5] flex items-center justify-center font-bold shrink-0 mt-0.5">
-                  1
-                </div>
-                <span>
-                  <strong>Arrive at site:</strong> Worker opens the Klockit app or mobile web session at their scheduled workplace.
-                </span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded-full bg-sky-100 text-[#009FF5] flex items-center justify-center font-bold shrink-0 mt-0.5">
-                  2
-                </div>
-                <span>
-                  <strong>Scan Site QR:</strong> Worker points camera at the physical Site poster to confirm arrival or departure.
-                </span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded-full bg-sky-100 text-[#009FF5] flex items-center justify-center font-bold shrink-0 mt-0.5">
-                  3
-                </div>
-                <span>
-                  <strong>Instant verification:</strong> Timestamp, location context, and worker identity are logged immediately to the organisation record.
-                </span>
-              </li>
-            </ul>
+      <div className="pt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="lg:col-span-6 space-y-4">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#009FF5]">
+            {activeTab.startsWith('phone') ? <Smartphone size={16} /> : <Tablet size={16} />}
+            <span>{descriptions.device}</span>
           </div>
-
-          {/* Illustrative Schematic Graphic */}
-          <div className="lg:col-span-6 bg-slate-50 rounded-xl p-6 border border-slate-200">
-            <div className="text-right pb-3">
-              <span className="text-[10px] font-medium text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200">
-                Example diagram · Illustrative layout
-              </span>
+          <h4 className="text-xl font-bold text-[#0A266B]">{descriptions.title}</h4>
+          <p className="text-sm text-slate-600 leading-relaxed">{descriptions.body}</p>
+          <ol className="space-y-3 pt-2 text-xs text-slate-700">
+            {descriptions.steps.map((step, index) => (
+              <li key={step} className="flex items-start gap-2.5">
+                <span className="w-5 h-5 rounded-full bg-sky-100 text-[#009FF5] flex items-center justify-center font-bold shrink-0 mt-0.5">
+                  {index + 1}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="lg:col-span-6 bg-slate-50 rounded-xl p-6 border border-slate-200">
+          <div className="text-right pb-3">
+            <span className="text-[10px] font-medium text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200">
+              Example · Illustrative flow
+            </span>
+          </div>
+          <div className="min-h-48 flex flex-col items-center justify-center gap-4 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-[#009FF5]">
+              {active.method === 'QR code' ? <QrCode size={36} /> : <Users size={34} />}
             </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 py-4">
-              {/* Site QR Poster Card */}
-              <div className="w-40 bg-white rounded-xl p-4 shadow-sm border border-slate-200 text-center space-y-2">
-                <div className="text-[11px] font-bold text-[#0A266B]">Site QR Poster</div>
-                <div className="w-24 h-24 mx-auto bg-slate-900 rounded-lg p-2 flex items-center justify-center text-white">
-                  <QrCode size={64} className="text-white" />
-                </div>
-                <div className="text-[10px] text-slate-500 font-mono">SITE-EAST-YARD</div>
-                <div className="text-[9px] text-emerald-600 font-semibold uppercase tracking-wider">
-                  Verified Workplace
-                </div>
-              </div>
-
-              {/* Connecting Flow Arrow */}
-              <div className="flex flex-col items-center justify-center text-slate-400">
-                <span className="text-xs font-semibold text-[#009FF5]">Scans</span>
-                <span className="text-lg">➔</span>
-              </div>
-
-              {/* Worker Phone Mockup */}
-              <div className="w-48 bg-white rounded-2xl p-3 shadow-md border-2 border-slate-300 space-y-2">
-                <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto" />
-                <div className="p-2.5 bg-sky-50/70 rounded-xl border border-sky-100 text-center space-y-1">
-                  <CheckCircle2 size={24} className="text-emerald-600 mx-auto" />
-                  <div className="text-xs font-bold text-[#0A266B]">Arrival Recorded</div>
-                  <div className="text-[10px] text-slate-600 font-medium">Amina Yusuf</div>
-                  <div className="text-[10px] text-slate-500 tabular-nums">07:55 AM · Main Site</div>
-                </div>
-                <div className="text-[10px] text-center text-slate-400">
-                  Worker sees their own record
-                </div>
-              </div>
+            <div className="text-xs font-semibold text-slate-500">{active.method}</div>
+            <div className="text-base font-bold text-[#0A266B]">{descriptions.device}</div>
+            <div className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-700">
+              {descriptions.action}
             </div>
+            {activeTab === 'phone-worker-ref' && (
+              <div className="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                This entry needs approval.
+              </div>
+            )}
+            {activeTab === 'device-worker-ref' && (
+              <div className="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
+                No additional approval needed.
+              </div>
+            )}
           </div>
         </div>
-      )}
-
-      {/* Tab 2 Content: Worker QR Card on Shared Workplace Device */}
-      {activeTab === 'method2' && (
-        <div className="pt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-6 space-y-4">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-600">
-              <Tablet size={16} />
-              <span>Organisation-Controlled Shared Device</span>
-            </div>
-            <h4 className="text-xl font-bold text-[#0A266B]">
-              Not every worker needs a smartphone.
-            </h4>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Workers can present their individual printed or laminated Klockit QR card to a fixed, organisation-controlled phone or tablet stationed at the workplace entrance.
-            </p>
-
-            <ul className="space-y-3 pt-2 text-xs text-slate-700">
-              <li className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0 mt-0.5">
-                  1
-                </div>
-                <span>
-                  <strong>Individual QR Card:</strong> Each accounted worker receives an individual, durable QR credential or badge.
-                </span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0 mt-0.5">
-                  2
-                </div>
-                <span>
-                  <strong>Present to Shared Device:</strong> Worker holds their card up to the shared site camera upon arriving or leaving.
-                </span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0 mt-0.5">
-                  3
-                </div>
-                <span>
-                  <strong>Equal Participation:</strong> Full participation across factory floors, warehouses, agricultural depots, and construction sites without requiring personal device ownership.
-                </span>
-              </li>
-            </ul>
-
-            {/* Guardrail status notice */}
-            <div className="p-3 bg-amber-50/70 rounded-xl border border-amber-200/80 text-[11px] text-amber-900 flex items-start gap-2">
-              <Info size={14} className="shrink-0 mt-0.5 text-amber-700" />
-              <span>
-                <strong>Planned launch capability:</strong> Shared-device Worker QR card scanning is scheduled for rollout following operational validation.
-              </span>
-            </div>
-          </div>
-
-          {/* Illustrative Schematic Graphic */}
-          <div className="lg:col-span-6 bg-slate-50 rounded-xl p-6 border border-slate-200">
-            <div className="text-right pb-3">
-              <span className="text-[10px] font-medium text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-200">
-                Example diagram · Illustrative layout
-              </span>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 py-4">
-              {/* Worker QR Card */}
-              <div className="w-40 bg-white rounded-xl p-3.5 shadow-sm border border-slate-200 text-center space-y-2">
-                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Worker Card</div>
-                <div className="w-20 h-20 mx-auto bg-slate-900 rounded-md p-1.5 flex items-center justify-center text-white">
-                  <QrCode size={52} className="text-white" />
-                </div>
-                <div className="font-semibold text-xs text-slate-800">Grace Uwimana</div>
-                <div className="text-[10px] text-slate-400 font-mono">W-FX-02</div>
-              </div>
-
-              {/* Connecting Flow Arrow */}
-              <div className="flex flex-col items-center justify-center text-slate-400">
-                <span className="text-xs font-semibold text-indigo-600">Presents</span>
-                <span className="text-lg">➔</span>
-              </div>
-
-              {/* Shared Site Device (Tablet) */}
-              <div className="w-48 bg-white rounded-xl p-3 shadow-md border-2 border-indigo-200 space-y-2">
-                <div className="flex items-center justify-between pb-1 border-b border-slate-100">
-                  <div className="text-[10px] font-bold text-[#0A266B]">Shared Site Kiosk</div>
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                </div>
-                <div className="p-2.5 bg-emerald-50/70 rounded-lg border border-emerald-100 text-center space-y-1">
-                  <CheckCircle2 size={22} className="text-emerald-600 mx-auto" />
-                  <div className="text-xs font-bold text-slate-900">Recorded: 07:58</div>
-                  <div className="text-[10px] text-slate-600">Arrival Logged</div>
-                </div>
-                <div className="text-[10px] text-center text-slate-400">
-                  Controlled by Organisation
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
