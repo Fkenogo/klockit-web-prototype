@@ -156,7 +156,7 @@ export const PLAN_BANDS: PlanBand[] = [
       RWF: 225000,
       BIF: 600000,
     },
-    description: 'For large operational workforces requiring structured site presence.',
+    description: 'For large teams working across multiple sites.',
   },
   {
     id: 'custom',
