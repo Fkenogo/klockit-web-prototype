@@ -55,7 +55,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'starter',
     name: 'Starter',
-    workersLabel: '1–4 Accounted Workers',
+    workersLabel: '1–4 workers',
     minWorkers: 1,
     maxWorkers: 4,
     prices: {
@@ -70,7 +70,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'small',
     name: 'Small',
-    workersLabel: '5–9 Accounted Workers',
+    workersLabel: '5–9 workers',
     minWorkers: 5,
     maxWorkers: 9,
     prices: {
@@ -85,7 +85,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'growing',
     name: 'Growing',
-    workersLabel: '10–19 Accounted Workers',
+    workersLabel: '10–19 workers',
     minWorkers: 10,
     maxWorkers: 19,
     prices: {
@@ -101,7 +101,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'business-standard',
     name: 'Business Standard',
-    workersLabel: '20–29 Accounted Workers',
+    workersLabel: '20–29 workers',
     minWorkers: 20,
     maxWorkers: 29,
     prices: {
@@ -116,7 +116,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'business-plus',
     name: 'Business Plus',
-    workersLabel: '30–49 Accounted Workers',
+    workersLabel: '30–49 workers',
     minWorkers: 30,
     maxWorkers: 49,
     prices: {
@@ -131,7 +131,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'business-pro',
     name: 'Business Pro',
-    workersLabel: '50–99 Accounted Workers',
+    workersLabel: '50–99 workers',
     minWorkers: 50,
     maxWorkers: 99,
     prices: {
@@ -146,7 +146,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'business-max',
     name: 'Business Max',
-    workersLabel: '100–199 Accounted Workers',
+    workersLabel: '100–199 workers',
     minWorkers: 100,
     maxWorkers: 199,
     prices: {
@@ -161,7 +161,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'custom',
     name: 'Custom',
-    workersLabel: '200+ Accounted Workers',
+    workersLabel: '200+ workers',
     minWorkers: 200,
     maxWorkers: null,
     prices: {
@@ -262,7 +262,7 @@ export interface SampleAttendanceRecord {
   arrival: string;
   departure: string;
   status: WorkerAttendanceStatus;
-  method: 'Site QR' | 'Worker QR Card' | 'Manager Logged';
+  method: 'Site QR' | 'Worker QR' | 'Manual Worker Ref' | 'Manager Logged';
   details?: string;
   contextNote?: string;
 }
@@ -279,7 +279,7 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     departure: '—',
     status: 'At work now',
     method: 'Site QR',
-    details: 'Verified via Site QR on Worker phone at North Gate',
+    details: 'Worker scanned the Site QR on their phone',
   },
   {
     id: 'REC-02',
@@ -291,8 +291,8 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     arrival: '07:58',
     departure: '—',
     status: 'At work now',
-    method: 'Worker QR Card',
-    details: 'Verified via Worker QR card on shared kiosk device',
+    method: 'Worker QR',
+    details: 'Site device scanned the Worker QR',
   },
   {
     id: 'REC-03',
@@ -305,7 +305,7 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     departure: '12:05',
     status: 'Completed',
     method: 'Site QR',
-    details: 'Full shift completed · Departure scan verified',
+    details: 'Arrival and departure recorded',
   },
   {
     id: 'REC-04',
@@ -317,8 +317,8 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     arrival: '08:52',
     departure: '—',
     status: 'At work now',
-    method: 'Worker QR Card',
-    details: 'Verified via Worker QR card on shared kiosk device',
+    method: 'Worker QR',
+    details: 'Site device scanned the Worker QR',
   },
   {
     id: 'REC-05',
@@ -331,7 +331,7 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     departure: '—',
     status: 'Not yet arrived',
     method: 'Site QR',
-    details: 'Afternoon shift scheduled · Window opens at 12:45',
+    details: 'Afternoon shift scheduled · Starts at 13:00',
   },
   {
     id: 'REC-06',
@@ -344,7 +344,7 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     departure: '—',
     status: 'Needs attention',
     method: 'Site QR',
-    details: 'Arrival 75m past planned start',
-    contextNote: 'Awaiting manager note: Off-site client delivery context pending confirmation',
+    details: 'Arrival recorded after the planned start',
+    contextNote: 'Manager review may add context for this attendance record',
   },
 ];
