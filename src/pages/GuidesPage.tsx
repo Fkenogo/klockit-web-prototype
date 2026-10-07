@@ -46,7 +46,7 @@ const GUIDES_LIST: GuideItem[] = [
     onThisPage: [
       { id: 'shared-record', label: 'A shared attendance record' },
       { id: 'site-qr', label: 'Using the Site QR' },
-      { id: 'worker-qr', label: 'Using a Worker QR card' },
+      { id: 'worker-qr', label: 'Using a Worker QR' },
       { id: 'what-record-tells-you', label: 'What the record tells you' },
       { id: 'common-questions', label: 'Common questions' },
     ],
@@ -66,13 +66,13 @@ const GUIDES_LIST: GuideItem[] = [
   {
     id: 'worker-qr-cards',
     category: 'Workers and invitations',
-    title: 'Issuing Worker QR cards',
+    title: 'Using Worker QR codes',
     readTime: '4 min read',
-    type: 'Hardware & cards',
+    type: 'Attendance guide',
     onThisPage: [
-      { id: 'card-generation', label: 'Generating individual QR credentials' },
+      { id: 'card-generation', label: 'Worker QR codes' },
       { id: 'shared-device-kiosk', label: 'Setting up the shared Site device' },
-      { id: 'replacement-cards', label: 'Managing lost or reissued cards' },
+      { id: 'replacement-cards', label: 'Help with a Worker QR' },
     ],
   },
   {
@@ -378,14 +378,14 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                   </div>
                 </section>
 
-                {/* 5. Section 02: The Worker QR Card */}
+                {/* 5. Section 02: Site device scans Worker QR */}
                 <section id="worker-qr" className="space-y-5 pt-6 border-t border-slate-100">
                   <div className="space-y-2">
                     <div className="text-xs font-mono font-semibold text-slate-500 uppercase tracking-wider">
                       02 / Site device scans Worker QR
                     </div>
                     <h3 className="text-2xl font-bold text-[#0A266B] tracking-tight">
-                      A card for the Worker. A shared device at the Site.
+                      A Worker QR. A shared device at the Site.
                     </h3>
                     <p className="text-sm text-slate-700 leading-relaxed">
                       The shared Site device scans a worker’s QR to record an arrival or departure.
@@ -398,7 +398,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                       {/* Left: Worker QR Card */}
                       <div className="w-44 bg-white rounded-xl p-4 shadow-xs border border-slate-200 text-center space-y-2">
                         <div className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider">
-                          Klockit · Worker Card
+                          Klockit · Worker QR
                         </div>
                         <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-800">
                           <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] flex items-center justify-center">
@@ -442,9 +442,9 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                         1
                       </div>
                       <div>
-                        <strong className="text-slate-900">The Worker carries their individual card.</strong>
+                        <strong className="text-slate-900">The worker presents their Worker QR.</strong>
                         <p className="text-xs text-slate-600 mt-0.5">
-                          Each Worker receives an individual physical or printed card with their unique QR credential.
+                          The worker’s QR is scanned by the shared Site device.
                         </p>
                       </div>
                     </div>
@@ -468,7 +468,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                       <div>
                         <strong className="text-slate-900">Arrival and departure are recorded in seconds.</strong>
                         <p className="text-xs text-slate-600 mt-0.5">
-                          Presenting the card logs the event into the shared attendance record without requiring a smartphone.
+                          The shared Site device records the worker’s arrival or departure. The worker does not need to use their own phone for this option.
                         </p>
                       </div>
                     </div>
@@ -491,7 +491,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                     </li>
                     <li className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-2">
                       <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
-                      <span><strong>Site verification:</strong> Physical location identifier where the scan occurred.</span>
+                      <span><strong>Site:</strong> The work location where attendance is recorded.</span>
                     </li>
                     <li className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-2">
                       <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
@@ -499,7 +499,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                     </li>
                     <li className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-2">
                       <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
-                      <span><strong>Shift reconciliation:</strong> Side-by-side comparison with scheduled work.</span>
+                      <span><strong>Planned shift:</strong> The shift the attendance can be compared with.</span>
                     </li>
                   </ul>
                 </section>
@@ -577,7 +577,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                         <li key={item.id} className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-start gap-2">
                           <span className="font-bold text-[#009FF5]">{idx + 1}.</span>
                           <div>
-                            <strong className="text-slate-800">{item.label}:</strong> Instructions and verification criteria established in accordance with Klockit governing rules.
+                            <strong className="text-slate-800">{item.label}:</strong> A short preview of help content. Final instructions will be added before launch.
                           </div>
                         </li>
                       ))}
