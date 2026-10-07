@@ -56,7 +56,7 @@ const GUIDES_LIST: GuideItem[] = [
     category: 'Sites and locations',
     title: 'Setting up your first workplace Site',
     readTime: '3 min read',
-    type: 'Operational guide',
+    type: 'Step-by-step guide',
     onThisPage: [
       { id: 'site-definition', label: 'What counts as a Site' },
       { id: 'qr-placard', label: 'Printing the Site QR placard' },
@@ -481,7 +481,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                     What the record tells you
                   </h3>
                   <p className="text-sm text-slate-700 leading-relaxed">
-                    Klockit attendance records are designed to be unambiguous and auditable. An attendance record includes:
+                    An attendance record can show:
                   </p>
 
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700 pt-2">
@@ -571,7 +571,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                   </section>
 
                   <section className="space-y-3">
-                    <h3 className="text-xl font-bold text-[#0A266B]">Key Operational Principles</h3>
+                    <h3 className="text-xl font-bold text-[#0A266B]">How Klockit works</h3>
                     <ul className="space-y-2 text-xs text-slate-600">
                       {selectedGuide.onThisPage.map((item, idx) => (
                         <li key={item.id} className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-start gap-2">
