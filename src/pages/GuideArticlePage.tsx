@@ -94,7 +94,7 @@ export function GuideArticlePage({
             1. What are the two ways to record attendance?
           </h2>
           <p className="text-sm text-slate-700 leading-relaxed">
-            In any modern workplace—whether a manufacturing facility, distribution warehouse, retail branch, or construction site—teams have varied access to personal technology. Klockit was purposefully designed so that no worker is left out of the verified attendance record.
+            The QR method gives your team two ways to record attendance: a worker can scan the Site QR on their phone, or the shared Site device can scan the worker’s QR.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
@@ -142,7 +142,7 @@ export function GuideArticlePage({
             Whether your team uses QR code or Manual Worker Ref, attendance records are kept together for your organisation.
           </p>
           <p className="text-sm text-slate-700 leading-relaxed">
-            Managers see a single, unified view across all company Sites:
+            Your organisation’s attendance records bring together:
           </p>
 
           <IllustrativeRecordDiagram className="mt-4" />
@@ -171,7 +171,7 @@ export function GuideArticlePage({
                 Does Klockit prove or measure productivity?
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                <strong>No.</strong> Klockit records workforce presence—it does not measure work output, monitor computer activity, track continuous GPS movements, or rate employee productivity. Evaluating how well work is done remains the role of human managers and supervisors, not an automated algorithm.
+                <strong>No.</strong> Klockit records attendance events. It does not continuously track a worker’s location or measure productivity.
               </p>
             </div>
 
@@ -181,7 +181,7 @@ export function GuideArticlePage({
                 Does Klockit decide why someone was absent?
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                <strong>No.</strong> When a scheduled worker has no recorded arrival, Klockit marks the session as requiring manager review. It never presumes reasons or makes punitive deductions automatically. Managers use Klockit to review situations with context—such as authorized field deployments, customer deliveries, approved leave, or unexpected delays.
+                <strong>No.</strong> A missing attendance record does not tell you why someone was absent. Managers can review the situation and add context.
               </p>
             </div>
           </div>
