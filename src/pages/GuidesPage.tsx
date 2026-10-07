@@ -84,7 +84,7 @@ const GUIDES_LIST: GuideItem[] = [
     onThisPage: [
       { id: 'daily-review', label: 'Daily presence review' },
       { id: 'context-notes', label: 'Adding context for field work' },
-      { id: 'evidence-rule', label: 'Record integrity guarantees' },
+      { id: 'attendance-records', label: 'Understanding attendance records' },
     ],
   },
   {
@@ -94,7 +94,7 @@ const GUIDES_LIST: GuideItem[] = [
     readTime: '3 min read',
     type: 'Commercial policy',
     onThisPage: [
-      { id: 'accounted-workers', label: 'How Accounted Workers are counted' },
+      { id: 'team-size', label: 'Choosing a plan for your team size' },
       { id: 'prepaid-cycles', label: 'Prepaid start-of-period terms' },
       { id: 'trial-expiry', label: 'Data retention on expiry' },
     ],
@@ -296,7 +296,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                       The Worker uses their own phone.
                     </h3>
                     <p className="text-sm text-slate-700 leading-relaxed">
-                      The Site QR identifies the workplace attendance path. A worker scans the Site QR using their phone to record an arrival or departure.
+                      A worker can scan the Site QR using their phone to record an arrival or departure.
                     </p>
                   </div>
 
@@ -382,7 +382,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                 <section id="worker-qr" className="space-y-5 pt-6 border-t border-slate-100">
                   <div className="space-y-2">
                     <div className="text-xs font-mono font-semibold text-slate-500 uppercase tracking-wider">
-                      02 / The Worker QR Card
+                      02 / Site device scans Worker QR
                     </div>
                     <h3 className="text-2xl font-bold text-[#0A266B] tracking-tight">
                       A card for the Worker. A shared device at the Site.
@@ -495,7 +495,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                     </li>
                     <li className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-2">
                       <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
-                      <span><strong>Worker credential:</strong> Cryptographic confirmation of worker identity.</span>
+                      <span><strong>Worker:</strong> The person whose attendance is being recorded.</span>
                     </li>
                     <li className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-2">
                       <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
@@ -559,14 +559,14 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                 </div>
 
                 <div className="p-4 bg-sky-50 border border-sky-100 rounded-xl text-xs text-slate-700">
-                  <strong className="text-slate-900">Approved Documentation:</strong> This guide provides official operational instructions for {selectedGuide.category.toLowerCase()} in Klockit.
+                  <strong className="text-slate-900">Guide preview:</strong> This sample content will be replaced with the final Klockit help guides.
                 </div>
 
                 <div className="space-y-6 text-sm text-slate-700 leading-relaxed">
                   <section className="space-y-2">
                     <h3 className="text-xl font-bold text-[#0A266B]">Overview & Scope</h3>
                     <p>
-                      In Klockit, operations are centered around workforce presence accountability. Every standard plan has access to the full platform capabilities without artificial feature gating.
+                      Every standard plan includes the same core Klockit product. This guide content is a preview and will be replaced with the final help materials.
                     </p>
                   </section>
 
