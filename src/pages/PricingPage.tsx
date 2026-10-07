@@ -329,19 +329,19 @@ export function PricingPage({
         </div>
       </section>
 
-      {/* 4. HOW KLOCKIT COUNTS WORKERS & BILLING */}
+      {/* 4. TEAM SIZE AND BILLING */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* How we count */}
+          {/* Plan size */}
           <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 space-y-4 shadow-xs">
             <div className="w-10 h-10 rounded-xl bg-slate-100 text-[#0A266B] flex items-center justify-center">
               <Users size={20} />
             </div>
             <h3 className="text-lg font-bold text-[#0A266B]">
-              Plans follow the Workers who have joined.
+              Plans sized to your team.
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              A Worker counts toward your plan after they have been onboarded into your organisation and accepted their Klockit invitation. <strong>Pending invitations do not count.</strong> Workers count whether or not they are currently scheduled or recording attendance.
+              Choose a plan based on the number of workers in your organisation. Your plan price changes with your team size.
             </p>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-1">
               <strong className="text-slate-800">Over-band notice:</strong>
