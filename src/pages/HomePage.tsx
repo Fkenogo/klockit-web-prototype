@@ -156,7 +156,7 @@ export function HomePage({
               <ShieldCheck size={22} />
             </div>
             <h3 className="font-bold text-base text-[#0A266B]">
-              Grounded in evidence
+              A clearer view
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
               Compare planned shifts with recorded arrival and departure times in one attendance record.
@@ -289,7 +289,7 @@ export function HomePage({
                 How Klockit QR attendance works
               </h2>
               <p className="text-sm sm:text-base text-slate-200 leading-relaxed max-w-xl">
-                Read our in-depth guide on how workers use the Site QR poster or individual Worker QR cards, what an attendance scan actually records, and how managers review context without surveillance.
+                See how QR attendance works, what appears in your records, and how managers can review attendance alongside planned shifts.
               </p>
               <div className="pt-2 flex flex-wrap items-center gap-4">
                 <button
@@ -350,7 +350,7 @@ export function HomePage({
                 <span>14-day automatic trial</span>
               </div>
               <p>
-                Starts immediately upon signup. Full access to set up Sites, invite workers, and record attendance. No credit card required.
+                Your 14-day trial starts when you sign up. No credit card required.
               </p>
             </div>
 
@@ -367,10 +367,10 @@ export function HomePage({
             <div className="space-y-2 text-xs text-slate-600">
               <div className="font-semibold text-slate-900 text-sm flex items-center gap-1.5">
                 <ShieldCheck size={16} className="text-indigo-600" />
-                <span>Instant reactivation</span>
+                <span>Keep your history</span>
               </div>
               <p>
-                Reactivate whenever ready. Your complete attendance history remains preserved in Klockit; inactive days are never backfilled.
+                Your organisation’s dashboard and past attendance records remain accessible after expiry. Reactivate at any time to resume recording attendance; inactive days remain a gap in the record.
               </p>
             </div>
           </div>
