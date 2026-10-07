@@ -54,7 +54,7 @@ export function GuideArticlePage({
         </h1>
 
         <p className="text-lg text-slate-600 leading-relaxed">
-          Learn the two attendance methods and the ways your team can use them on a personal phone or shared Site device.
+          Learn the two QR attendance options: a worker scans the Site QR on their phone, or a shared Site device scans the worker’s QR.
         </p>
 
         {/* Key Takeaways Callout Box */}
@@ -67,7 +67,7 @@ export function GuideArticlePage({
             <li className="flex items-start gap-2">
               <span className="text-[#009FF5] font-bold">•</span>
               <span>
-                <strong>Two attendance methods:</strong> QR code and Manual Worker Ref. Each can be used on a worker’s phone or a shared Site device, with the right approval steps.
+                <strong>Two QR options:</strong> A worker scans the Site QR with their phone, or a shared Site device scans the worker’s QR.
               </span>
             </li>
             <li className="flex items-start gap-2">
@@ -139,7 +139,7 @@ export function GuideArticlePage({
             3. Both methods contribute to one organisational record
           </h2>
           <p className="text-sm text-slate-700 leading-relaxed">
-            Whether your team uses QR code or Manual Worker Ref, attendance records are kept together for your organisation.
+            Both QR options add attendance to your organisation’s records.
           </p>
           <p className="text-sm text-slate-700 leading-relaxed">
             Your organisation’s attendance records bring together:
@@ -158,7 +158,7 @@ export function GuideArticlePage({
             {/* FAQ 1 */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 space-y-2">
               <h3 className="font-bold text-base text-[#0A266B]">
-                What does a Klockit QR scan actually record?
+                What information is recorded?
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
                 An attendance record shows the worker, the Site, the recorded arrival or departure time, and the method used. Managers can review the record alongside planned work.
