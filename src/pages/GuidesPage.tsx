@@ -267,7 +267,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                     <Info size={16} />
                   </div>
                   <div>
-                    <strong className="text-slate-900">A guide to the intended experience.</strong> All QR visuals are illustrative examples. The shared-device Worker QR method is a planned launch capability; public release depends on implementation and validation.
+                    <strong className="text-slate-900">QR attendance guide.</strong> Klockit supports QR attendance from a worker’s phone or a shared Site device.
                   </div>
                 </div>
 
@@ -278,7 +278,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                   </h2>
                   <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
                     <p>
-                      Klockit brings planned work and supported attendance events together across your organisation’s Sites. A Worker can use a suitable phone with the Site QR, or present an individual Worker QR card to an organisation-controlled shared Site device.
+                      Klockit supports two ways to record attendance: QR code and Manual Worker Ref. Workers can use their own phone or a shared device at the Site.
                     </p>
                     <p>
                       Both methods contribute to the organisation’s attendance record. Not every Worker needs to own a smartphone.
@@ -290,13 +290,13 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                 <section id="site-qr" className="space-y-5 pt-4">
                   <div className="space-y-2">
                     <div className="text-xs font-mono font-semibold text-slate-500 uppercase tracking-wider">
-                      01 / The Site QR
+                      01 / Worker scans Site QR
                     </div>
                     <h3 className="text-2xl font-bold text-[#0A266B] tracking-tight">
                       The Worker uses their own phone.
                     </h3>
                     <p className="text-sm text-slate-700 leading-relaxed">
-                      The Site QR identifies the workplace attendance path. A Worker uses a suitable phone with that Site QR to record supported arrival and departure events.
+                      The Site QR identifies the workplace attendance path. A worker scans the Site QR using their phone to record an arrival or departure.
                     </p>
                   </div>
 
@@ -388,7 +388,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                       A card for the Worker. A shared device at the Site.
                     </h3>
                     <p className="text-sm text-slate-700 leading-relaxed">
-                      The individual Worker QR card identifies the Worker, not the Site. The Worker presents the card to an organisation-controlled shared Site device to record arrival or departure.
+                      The shared Site device scans a worker’s QR to record an arrival or departure.
                     </p>
                   </div>
 
@@ -481,13 +481,13 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                     What the record tells you
                   </h3>
                   <p className="text-sm text-slate-700 leading-relaxed">
-                    Klockit attendance records are designed to be unambiguous and auditable. Every verified scan event records:
+                    Klockit attendance records are designed to be unambiguous and auditable. An attendance record includes:
                   </p>
 
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-700 pt-2">
                     <li className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-2">
                       <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
-                      <span><strong>Occurrence timestamp:</strong> Exact verified time of arrival or departure.</span>
+                      <span><strong>Time:</strong> The recorded arrival or departure time.</span>
                     </li>
                     <li className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-2">
                       <CheckCircle2 size={16} className="text-emerald-600 shrink-0 mt-0.5" />
@@ -513,10 +513,10 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                   <div className="space-y-4">
                     <div className="bg-slate-50/70 p-5 rounded-xl border border-slate-200 space-y-1.5">
                       <h4 className="font-bold text-sm text-[#0A266B]">
-                        What does a QR scan actually record?
+                        What appears in an attendance record?
                       </h4>
                       <p className="text-xs text-slate-600 leading-relaxed">
-                        A QR scan records supported attendance events: arrival and departure times, worker identity, and the verified Site. It creates a cryptographic presence log for managers to review with context.
+                        The record shows the worker, Site, arrival or departure time, and the method used. Managers can review it alongside planned work.
                       </p>
                     </div>
 
@@ -525,7 +525,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                         Does Klockit prove worker productivity?
                       </h4>
                       <p className="text-xs text-slate-600 leading-relaxed">
-                        <strong>No.</strong> Klockit records workforce presence at approved Sites. It does not measure output, monitor software keystrokes, or rate employee productivity. Evaluating workplace contribution remains the role of human managers.
+                        <strong>No.</strong> Klockit records attendance events. It doesn’t continuously track a worker’s location or measure productivity.
                       </p>
                     </div>
 
@@ -534,7 +534,7 @@ export function GuidesPage({ onNavigate, onOpenContactModal, initialGuideId = 'q
                         Does Klockit determine why someone was absent?
                       </h4>
                       <p className="text-xs text-slate-600 leading-relaxed">
-                        <strong>No.</strong> Klockit flags deviations against scheduled shifts so authorised managers can review and record context—such as approved field deployments, off-site deliveries, sick leave, or transport delays.
+                        <strong>No.</strong> A missing attendance record does not tell you why someone was absent. Managers can review the situation and add context.
                       </p>
                     </div>
                   </div>
