@@ -1,0 +1,6 @@
+{
+  "name": "Klockit — Know Who Was at Work",
+  "description": "High-fidelity visual prototype for Klockit's public website. Clear record of planned work and recorded attendance across organisation sites.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
