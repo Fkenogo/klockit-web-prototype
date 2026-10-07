@@ -555,8 +555,8 @@ export function TwoMethodsInteractiveDiagram() {
     },
     'phone-worker-ref': {
       title: 'Worker enters their Worker Ref on their phone',
-      body: 'A worker can enter their Worker Ref on their own phone. This entry needs approval before it is recorded as attendance.',
-      steps: ['Open Klockit on the worker’s phone.', 'Enter the Worker Ref.', 'An authorised person reviews and approves the entry.'],
+      body: 'A worker can enter their Worker Ref on their own phone. This entry needs approval before attendance is recorded.',
+      steps: ['Open Klockit on the worker’s phone.', 'Enter the Worker Ref.', 'The entry is reviewed and approved.'],
       device: 'Worker’s phone',
       action: 'Enter Worker Ref',
     },
