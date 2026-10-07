@@ -116,7 +116,7 @@ export function Footer({ onNavigate, onOpenContactModal, onOpenTrialModal }: Foo
               Contact
             </button>
             <button
-              onClick={() => alert('Trust & Privacy: Klockit records attendance presence timestamps on verified sites. Klockit does not track background locations, monitor keystrokes, or rate productivity.')}
+              onClick={() => alert('Trust & Privacy: Klockit records attendance events for your organisation. It does not continuously track workers’ locations.')}
               className="hover:text-slate-300 transition-colors"
             >
               Trust & Privacy
