@@ -55,7 +55,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'starter',
     name: 'Starter',
-    workersLabel: '1–4 Accounted Workers',
+    workersLabel: '1–4 workers',
     minWorkers: 1,
     maxWorkers: 4,
     prices: {
@@ -70,7 +70,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'small',
     name: 'Small',
-    workersLabel: '5–9 Accounted Workers',
+    workersLabel: '5–9 workers',
     minWorkers: 5,
     maxWorkers: 9,
     prices: {
@@ -85,7 +85,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'growing',
     name: 'Growing',
-    workersLabel: '10–19 Accounted Workers',
+    workersLabel: '10–19 workers',
     minWorkers: 10,
     maxWorkers: 19,
     prices: {
@@ -101,7 +101,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'business-standard',
     name: 'Business Standard',
-    workersLabel: '20–29 Accounted Workers',
+    workersLabel: '20–29 workers',
     minWorkers: 20,
     maxWorkers: 29,
     prices: {
@@ -116,7 +116,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'business-plus',
     name: 'Business Plus',
-    workersLabel: '30–49 Accounted Workers',
+    workersLabel: '30–49 workers',
     minWorkers: 30,
     maxWorkers: 49,
     prices: {
@@ -131,7 +131,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'business-pro',
     name: 'Business Pro',
-    workersLabel: '50–99 Accounted Workers',
+    workersLabel: '50–99 workers',
     minWorkers: 50,
     maxWorkers: 99,
     prices: {
@@ -146,7 +146,7 @@ export const PLAN_BANDS: PlanBand[] = [
   {
     id: 'business-max',
     name: 'Business Max',
-    workersLabel: '100–199 Accounted Workers',
+    workersLabel: '100–199 workers',
     minWorkers: 100,
     maxWorkers: 199,
     prices: {
@@ -156,12 +156,12 @@ export const PLAN_BANDS: PlanBand[] = [
       RWF: 225000,
       BIF: 600000,
     },
-    description: 'For large operational workforces requiring structured site presence.',
+    description: 'For large teams working across multiple sites.',
   },
   {
     id: 'custom',
     name: 'Custom',
-    workersLabel: '200+ Accounted Workers',
+    workersLabel: '200+ workers',
     minWorkers: 200,
     maxWorkers: null,
     prices: {
@@ -178,23 +178,23 @@ export const PLAN_BANDS: PlanBand[] = [
 export const CORE_INCLUDED_FEATURES = [
   {
     title: 'Plan the work',
-    description: 'Set the work your organisation expects and organise it across your Sites.',
+    description: 'Set the work your organisation expects and organise it across your work locations.',
   },
   {
     title: 'Keep attendance records together',
-    description: 'Record workforce presence and maintain an attendance history for your organisation.',
+    description: 'Record attendance and keep your organisation’s attendance history together.',
   },
   {
     title: 'Understand what needs review',
-    description: 'Give Managers clear information about planned work, recorded attendance and situations that need attention.',
+    description: 'See planned work, recorded attendance and sessions that may need a closer look.',
   },
   {
-    title: 'Give Workers access to their records',
-    description: 'Workers can see their own attendance information with clarity and trust.',
+    title: 'Let team members see their records',
+    description: 'Team members can view their own attendance records.',
   },
   {
-    title: 'Standard adoption support',
-    description: 'Human onboarding assistance normally within 24 hours, product documentation, and implementation guidance.',
+    title: 'Help getting started',
+    description: 'Onboarding assistance, product guides and setup advice. We usually respond within 24 hours.',
   },
 ];
 
@@ -208,13 +208,13 @@ export const GUIDES_CATEGORIES = [
   {
     id: 'workers-invitations',
     title: 'Workers and invitations',
-    description: 'Learn how Workers join your organisation and access their own records.',
+    description: 'Learn how team members join your organisation and view their own records.',
     articlesCount: 4,
   },
   {
     id: 'sites-locations',
     title: 'Sites and work locations',
-    description: 'Understand how your organisation represents its workplaces and approved work locations.',
+    description: 'Set up the work locations where your team records attendance.',
     articlesCount: 3,
   },
   {
@@ -226,26 +226,26 @@ export const GUIDES_CATEGORIES = [
   {
     id: 'recording-attendance',
     title: 'Recording attendance',
-    description: 'Learn how supported arrival and departure methods work with QR codes.',
+    description: 'Learn how QR code and Manual Worker Ref work on a phone or shared Site device.',
     articlesCount: 3,
     featured: true,
   },
   {
     id: 'manager-review',
     title: 'Manager review',
-    description: 'Understand how Managers review attendance records and situations needing attention.',
+    description: 'Learn how managers review attendance records and sessions that need attention.',
     articlesCount: 2,
   },
   {
     id: 'attendance-records',
     title: 'Attendance records',
-    description: 'Find and understand the presence records available to each role in your team.',
+    description: 'Find and understand the attendance records available to your organisation and team.',
     articlesCount: 3,
   },
   {
     id: 'plans-billing',
     title: 'Plans and billing',
-    description: 'Learn about workforce bands, subscriptions, receipts, and payment options.',
+    description: 'Learn about team sizes, subscriptions, receipts and payment options.',
     articlesCount: 4,
   },
 ];
@@ -262,7 +262,7 @@ export interface SampleAttendanceRecord {
   arrival: string;
   departure: string;
   status: WorkerAttendanceStatus;
-  method: 'Site QR' | 'Worker QR Card' | 'Manager Logged';
+  method: 'Site QR' | 'Worker QR' | 'Manual Worker Ref' | 'Manager Logged';
   details?: string;
   contextNote?: string;
 }
@@ -279,7 +279,7 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     departure: '—',
     status: 'At work now',
     method: 'Site QR',
-    details: 'Verified via Site QR on Worker phone at North Gate',
+    details: 'Worker scanned the Site QR on their phone',
   },
   {
     id: 'REC-02',
@@ -291,8 +291,8 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     arrival: '07:58',
     departure: '—',
     status: 'At work now',
-    method: 'Worker QR Card',
-    details: 'Verified via Worker QR card on shared kiosk device',
+    method: 'Worker QR',
+    details: 'Site device scanned the Worker QR',
   },
   {
     id: 'REC-03',
@@ -305,7 +305,7 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     departure: '12:05',
     status: 'Completed',
     method: 'Site QR',
-    details: 'Full shift completed · Departure scan verified',
+    details: 'Arrival and departure recorded',
   },
   {
     id: 'REC-04',
@@ -317,8 +317,8 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     arrival: '08:52',
     departure: '—',
     status: 'At work now',
-    method: 'Worker QR Card',
-    details: 'Verified via Worker QR card on shared kiosk device',
+    method: 'Worker QR',
+    details: 'Site device scanned the Worker QR',
   },
   {
     id: 'REC-05',
@@ -331,7 +331,7 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     departure: '—',
     status: 'Not yet arrived',
     method: 'Site QR',
-    details: 'Afternoon shift scheduled · Window opens at 12:45',
+    details: 'Afternoon shift scheduled · Starts at 13:00',
   },
   {
     id: 'REC-06',
@@ -344,7 +344,7 @@ export const SAMPLE_ATTENDANCE_DATA: SampleAttendanceRecord[] = [
     departure: '—',
     status: 'Needs attention',
     method: 'Site QR',
-    details: 'Arrival 75m past planned start',
-    contextNote: 'Awaiting manager note: Off-site client delivery context pending confirmation',
+    details: 'Arrival recorded after the planned start',
+    contextNote: 'Manager review may add context for this attendance record',
   },
 ];

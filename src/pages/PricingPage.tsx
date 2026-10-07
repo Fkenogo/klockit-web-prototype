@@ -29,7 +29,7 @@ export function PricingPage({
   onOpenTrialModal,
   onOpenContactModal,
 }: PricingPageProps) {
-  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyCode>('USD');
+  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyCode>('KES');
   const [selectedWorkers, setSelectedWorkers] = useState<number>(15);
 
   const currencyConfig = CURRENCIES[selectedCurrency];
@@ -60,11 +60,11 @@ export function PricingPage({
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0A266B] tracking-tight leading-tight">
-            Clear pricing for workforce accountability.
+            Simple pricing for your team.
           </h1>
 
           <p className="text-lg text-slate-600 leading-relaxed">
-            Choose a plan based on the number of Workers who have joined your organisation in Klockit. Every standard plan includes the same Klockit product; the price band changes with your accounted workforce.
+            Choose a plan based on the number of workers in your organisation. Every standard plan includes the same core Klockit product.
           </p>
 
           <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -130,7 +130,7 @@ export function PricingPage({
                   {selectedWorkers}
                 </span>
                 <span className="text-xs font-medium text-slate-500 ml-1.5">
-                  Accounted Workers
+                  Workers
                 </span>
               </div>
             </div>
@@ -143,7 +143,7 @@ export function PricingPage({
               value={selectedWorkers}
               onChange={(e) => setSelectedWorkers(Number(e.target.value))}
               className="w-full accent-[#0A266B] cursor-pointer h-2 bg-slate-200 rounded-lg"
-              aria-label="Accounted workers slider"
+              aria-label="Number of workers slider"
             />
 
             {/* Live Recommendation Card */}
@@ -202,11 +202,11 @@ export function PricingPage({
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
                     <th className="py-3 px-4">Plan Name</th>
-                    <th className="py-3 px-4">Accounted Workers</th>
+                    <th className="py-3 px-4">Workers</th>
                     <th className="py-3 px-4 text-right">
                       Price in {CURRENCIES[selectedCurrency].label}
                     </th>
-                    <th className="py-3 px-4 text-right">USD Reference</th>
+                    <th className="py-3 px-4 text-right">USD equivalent</th>
                     <th className="py-3 px-4 text-center">Action</th>
                   </tr>
                 </thead>
@@ -276,7 +276,7 @@ export function PricingPage({
             </div>
 
             <p className="text-xs text-slate-500">
-              Prices shown include applicable taxes. Standard subscriptions are invoiced and prepaid at the start of each subscription period.
+              Prices shown include applicable taxes. Subscriptions are prepaid before each period begins. You’ll receive a payment receipt and the date your next payment is due.
             </p>
           </div>
         </div>
@@ -292,7 +292,7 @@ export function PricingPage({
             The same Klockit product in every plan.
           </h2>
           <p className="text-sm text-slate-600 leading-relaxed">
-            All standard plans give your organisation the same core Klockit experience. Choose the band that matches your accounted workforce—higher tiers never lock out essential tools.
+            Every standard plan includes the same core Klockit product. Choose the price band that fits your team size.
           </p>
         </div>
 
@@ -329,24 +329,24 @@ export function PricingPage({
         </div>
       </section>
 
-      {/* 4. HOW KLOCKIT COUNTS WORKERS & BILLING */}
+      {/* 4. TEAM SIZE AND BILLING */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* How we count */}
+          {/* Plan size */}
           <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 space-y-4 shadow-xs">
             <div className="w-10 h-10 rounded-xl bg-slate-100 text-[#0A266B] flex items-center justify-center">
               <Users size={20} />
             </div>
             <h3 className="text-lg font-bold text-[#0A266B]">
-              Plans follow the Workers who have joined.
+              Plans sized to your team.
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              A Worker counts toward your plan after they have been onboarded into your organisation and accepted their Klockit invitation. <strong>Pending invitations do not count.</strong> Workers count whether or not they are currently scheduled or recording attendance.
+              Choose a plan based on the number of workers in your organisation. Your plan price changes with your team size.
             </p>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-1">
-              <strong className="text-slate-800">Over-band notice:</strong>
+              <strong className="text-slate-800">Plan changes:</strong>
               <p>
-                If your accounted workforce exceeds your plan band, Klockit will notify your organisation. The new band takes effect from the next subscription period, so service is not interrupted immediately.
+                You can adjust your plan as your team changes. Any new price starts with your next subscription period.
               </p>
             </div>
           </div>
@@ -360,7 +360,7 @@ export function PricingPage({
               Know when your subscription is due.
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Standard subscriptions are invoiced and paid at the start of each subscription period. Subscriptions are prepaid before the period begins. Payment options include Mobile Money, cards and bank transfers; customers receive a receipt and next due date.
+              Subscriptions are prepaid before each period begins. Mobile Money, card and bank transfer payments will be available. You’ll receive a receipt and the date your next payment is due.
             </p>
             <div className="p-3 bg-sky-50/70 rounded-xl border border-sky-100 text-xs text-slate-700 space-y-1">
               <strong className="text-[#0A266B]">Pilot payment note:</strong>
@@ -383,7 +383,7 @@ export function PricingPage({
               Need a different arrangement?
             </h3>
             <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
-              Custom is for organisations with 200 or more accounted Workers, and for non-standard or fixed-duration needs at any workforce size—including construction projects, events, and seasonal operations. Custom arrangements include dedicated human assistance to agree an appropriate setup.
+              Custom plans are available for organisations with 200 or more workers, and for fixed-duration needs such as construction projects, events and seasonal operations.
             </p>
           </div>
 
@@ -413,16 +413,16 @@ export function PricingPage({
               Do different standard plans include different features?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              No. Every standard plan includes the exact same Klockit product. The price is based solely on the number of Accounted Workers who have joined your organisation.
+              No. Every standard plan includes the same core Klockit product. The price is based on the number of workers in your organisation.
             </p>
           </div>
 
           <div className="bg-white p-5 rounded-2xl border border-slate-200 space-y-1.5">
             <h4 className="font-bold text-sm text-[#0A266B]">
-              Do pending invitations count toward my plan?
+              Can I change plans as my team grows?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              No. A Worker counts toward your plan only after they have completed onboarding and accepted their invitation. Pending invitations do not count toward your active band.
+              Yes. You can adjust your plan as your team changes. Any new price starts with your next subscription period.
             </p>
           </div>
 
@@ -431,7 +431,7 @@ export function PricingPage({
               Does adding another Site change my price?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              No. Standard pricing is based strictly on Accounted Workers, not the number of Sites. You can add offices, workshops, project locations, or field points freely.
+              Your plan price is based on the number of workers in your organisation, not the number of Sites.
             </p>
           </div>
 
@@ -440,7 +440,7 @@ export function PricingPage({
               What payment methods can I use?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Subscriptions are prepaid before the period begins. Payment options include Mobile Money, cards, and bank transfers. During the pilot, Klockit guides your organisation through a manual payment process after you choose to pay.
+              Subscriptions are prepaid before the period begins. Mobile Money, card and bank transfer payments will be available. During the pilot, we’ll guide you through the payment steps. You’ll receive a receipt and the date your next payment is due.
             </p>
           </div>
 
@@ -449,7 +449,7 @@ export function PricingPage({
               Does every Worker need a smartphone?
             </h4>
             <p className="text-xs text-slate-600 leading-relaxed">
-              No. Workers can use their individual Klockit QR card at an organisation-controlled shared workplace device to record arrival and departure (planned launch capability). Workers with smartphones can scan the Site QR poster directly.
+              There are two attendance methods: QR code and Manual Worker Ref. For QR, workers can scan the Site QR with their phone or use a shared Site device to scan their Worker QR. For Manual Worker Ref, they can enter their Ref on their phone (which needs approval) or on a shared Site device (no approval needed).
             </p>
           </div>
         </div>

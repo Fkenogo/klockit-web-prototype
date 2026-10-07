@@ -54,7 +54,7 @@ export function GuideArticlePage({
         </h1>
 
         <p className="text-lg text-slate-600 leading-relaxed">
-          A practical guide to how workers record presence across organisation Sites using personal smartphones or shared workplace devices, and how managers review recorded evidence with human context.
+          Learn the two QR attendance options: a worker scans the Site QR on their phone, or a shared Site device scans the worker’s QR.
         </p>
 
         {/* Key Takeaways Callout Box */}
@@ -67,19 +67,19 @@ export function GuideArticlePage({
             <li className="flex items-start gap-2">
               <span className="text-[#009FF5] font-bold">•</span>
               <span>
-                <strong>Two complementary methods:</strong> Workers with a smartphone scan the Site QR poster; workers without a smartphone use an individual Worker QR card at a shared workplace device.
+                <strong>Two QR options:</strong> A worker scans the Site QR with their phone, or a shared Site device scans the worker’s QR.
               </span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-[#009FF5] font-bold">•</span>
               <span>
-                <strong>Not every worker needs a smartphone:</strong> Both paths write seamlessly to the same organisation attendance record.
+                <strong>Use a personal or shared device:</strong> Attendance from either method is saved to the organisation’s records.
               </span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-[#009FF5] font-bold">•</span>
               <span>
-                <strong>Context over surveillance:</strong> Klockit records supported presence timestamps for managers to review with context; it never rates productivity or guesses why someone was absent.
+                <strong>Attendance records for review:</strong> Managers can compare recorded attendance with planned work and review sessions that need attention.
               </span>
             </li>
           </ul>
@@ -91,32 +91,32 @@ export function GuideArticlePage({
         {/* Section 1: Who uses what? */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold text-[#0A266B]">
-            1. Who uses the Site QR and who uses the Worker QR card?
+            1. What are the two ways to record attendance?
           </h2>
           <p className="text-sm text-slate-700 leading-relaxed">
-            In any modern workplace—whether a manufacturing facility, distribution warehouse, retail branch, or construction site—teams have varied access to personal technology. Klockit was purposefully designed so that no worker is left out of the verified attendance record.
+            The QR method gives your team two ways to record attendance: a worker can scan the Site QR on their phone, or the shared Site device can scan the worker’s QR.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
             <div className="bg-white p-5 rounded-xl border border-slate-200 space-y-2">
               <div className="flex items-center gap-2 font-bold text-sm text-[#0A266B]">
                 <Smartphone size={16} className="text-[#009FF5]" />
-                <span>The Site QR Poster Flow</span>
+                <span>Worker scans Site QR</span>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">
                 <strong>Who uses it:</strong> Workers with personal or company smartphones.<br />
-                <strong>How:</strong> The organisation generates a verified Site QR poster and displays it at the site entry. The worker scans the poster with their camera in the Klockit app or mobile session to log arrival and departure.
+                <strong>How:</strong> The worker uses their phone to scan the Site QR and record an arrival or departure.
               </p>
             </div>
 
             <div className="bg-white p-5 rounded-xl border border-slate-200 space-y-2">
               <div className="flex items-center gap-2 font-bold text-sm text-[#0A266B]">
                 <Tablet size={16} className="text-indigo-600" />
-                <span>The Worker QR Card Flow</span>
+                <span>Site device scans Worker QR</span>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">
                 <strong>Who uses it:</strong> Workers without smartphones, temporary workers, or rotating shop-floor teams.<br />
-                <strong>How:</strong> Each worker holds a physical, laminated Klockit QR card. They present this card to an organisation-controlled shared tablet or phone stationed at the workplace entrance.
+                <strong>How:</strong> The shared Site device scans the worker’s QR to record an arrival or departure.
               </p>
             </div>
           </div>
@@ -139,10 +139,10 @@ export function GuideArticlePage({
             3. Both methods contribute to one organisational record
           </h2>
           <p className="text-sm text-slate-700 leading-relaxed">
-            Regardless of whether a team member scanned the Site QR on their phone or badged in with a Worker QR card at a shared station, their attendance event is processed into the organisation’s centralized presence log in real time.
+            Both QR options add attendance to your organisation’s records.
           </p>
           <p className="text-sm text-slate-700 leading-relaxed">
-            Managers see a single, unified view across all company Sites:
+            Your organisation’s attendance records bring together:
           </p>
 
           <IllustrativeRecordDiagram className="mt-4" />
@@ -158,10 +158,10 @@ export function GuideArticlePage({
             {/* FAQ 1 */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 space-y-2">
               <h3 className="font-bold text-base text-[#0A266B]">
-                What does a Klockit QR scan actually record?
+                What information is recorded?
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                A QR scan records the specific supported attendance event: the exact verified timestamp (arrival or departure), the identity of the worker, the verified Site location, and the verification method used. It creates a cryptographic, unalterable log entry of physical presence at work.
+                An attendance record shows the worker, the Site, the recorded arrival or departure time, and the method used. Managers can review the record alongside planned work.
               </p>
             </div>
 
@@ -171,7 +171,7 @@ export function GuideArticlePage({
                 Does Klockit prove or measure productivity?
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                <strong>No.</strong> Klockit records workforce presence—it does not measure work output, monitor computer activity, track continuous GPS movements, or rate employee productivity. Evaluating how well work is done remains the role of human managers and supervisors, not an automated algorithm.
+                <strong>No.</strong> Klockit records attendance events. It does not continuously track a worker’s location or measure productivity.
               </p>
             </div>
 
@@ -181,7 +181,7 @@ export function GuideArticlePage({
                 Does Klockit decide why someone was absent?
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                <strong>No.</strong> When a scheduled worker has no recorded arrival, Klockit marks the session as requiring manager review. It never presumes reasons or makes punitive deductions automatically. Managers use Klockit to review situations with context—such as authorized field deployments, customer deliveries, approved leave, or unexpected delays.
+                <strong>No.</strong> A missing attendance record does not tell you why someone was absent. Managers can review the situation and add context.
               </p>
             </div>
           </div>
@@ -194,7 +194,7 @@ export function GuideArticlePage({
             <span>Data preservation & subscription pause</span>
           </h3>
           <p className="text-xs text-slate-600 leading-relaxed">
-            Your records stay with your organisation. If your 14-day trial ends or a subscription period expires before reactivation, organisation Administrators retain full access to the dashboard and historical attendance data. New attendance recording pauses until reactivated; inactive days are never backfilled, ensuring historical integrity.
+            Your organisation’s dashboard and past attendance records remain accessible if a trial or subscription period ends. Workers can’t record new attendance while the account is inactive. Reactivate at any time to continue; the inactive days remain a gap in the record.
           </p>
         </section>
 

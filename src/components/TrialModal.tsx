@@ -87,8 +87,8 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 <span className="font-semibold text-slate-800">{formData.adminEmail || 'admin@company.com'}</span>
               </div>
               <div className="flex justify-between text-slate-600">
-                <span>Initial Worker Band:</span>
-                <span className="font-semibold text-slate-800">{formData.expectedWorkers} Accounted Workers</span>
+                <span>Number of workers:</span>
+                <span className="font-semibold text-slate-800">{formData.expectedWorkers} workers</span>
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Trial Validity:</span>
@@ -97,7 +97,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
             </div>
 
             <p className="text-xs text-slate-500">
-              Your historical data remains accessible even if the trial period concludes before subscribing.
+              Your organisation keeps access to its dashboard and attendance history if the trial ends. New attendance recording pauses until you reactivate.
             </p>
 
             <button
@@ -209,7 +209,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-600 space-y-1.5">
                   <div className="font-semibold text-slate-800">Sites in Klockit:</div>
                   <p>
-                    A site can be an office, branch, workshop, construction location, or approved field reporting base. Pricing is based on Accounted Workers, not the number of Sites you add.
+                    A site can be an office, branch, workshop, construction location, or approved field reporting base. Your price is based on the number of workers in your organisation, not the number of Sites.
                   </p>
                 </div>
               </div>
