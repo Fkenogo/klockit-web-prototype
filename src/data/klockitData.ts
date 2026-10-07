@@ -178,23 +178,23 @@ export const PLAN_BANDS: PlanBand[] = [
 export const CORE_INCLUDED_FEATURES = [
   {
     title: 'Plan the work',
-    description: 'Set the work your organisation expects and organise it across your Sites.',
+    description: 'Set the work your organisation expects and organise it across your work locations.',
   },
   {
     title: 'Keep attendance records together',
-    description: 'Record workforce presence and maintain an attendance history for your organisation.',
+    description: 'Record attendance and keep your organisation’s attendance history together.',
   },
   {
     title: 'Understand what needs review',
-    description: 'Give Managers clear information about planned work, recorded attendance and situations that need attention.',
+    description: 'See planned work, recorded attendance and sessions that may need a closer look.',
   },
   {
-    title: 'Give Workers access to their records',
-    description: 'Workers can see their own attendance information with clarity and trust.',
+    title: 'Let team members see their records',
+    description: 'Team members can view their own attendance records.',
   },
   {
-    title: 'Standard adoption support',
-    description: 'Human onboarding assistance normally within 24 hours, product documentation, and implementation guidance.',
+    title: 'Help getting started',
+    description: 'Onboarding assistance, product guides and setup advice. We usually respond within 24 hours.',
   },
 ];
 
@@ -208,13 +208,13 @@ export const GUIDES_CATEGORIES = [
   {
     id: 'workers-invitations',
     title: 'Workers and invitations',
-    description: 'Learn how Workers join your organisation and access their own records.',
+    description: 'Learn how team members join your organisation and view their own records.',
     articlesCount: 4,
   },
   {
     id: 'sites-locations',
     title: 'Sites and work locations',
-    description: 'Understand how your organisation represents its workplaces and approved work locations.',
+    description: 'Set up the work locations where your team records attendance.',
     articlesCount: 3,
   },
   {
@@ -226,26 +226,26 @@ export const GUIDES_CATEGORIES = [
   {
     id: 'recording-attendance',
     title: 'Recording attendance',
-    description: 'Learn how supported arrival and departure methods work with QR codes.',
+    description: 'Learn how QR code and Manual Worker Ref work on a phone or shared Site device.',
     articlesCount: 3,
     featured: true,
   },
   {
     id: 'manager-review',
     title: 'Manager review',
-    description: 'Understand how Managers review attendance records and situations needing attention.',
+    description: 'Learn how managers review attendance records and sessions that need attention.',
     articlesCount: 2,
   },
   {
     id: 'attendance-records',
     title: 'Attendance records',
-    description: 'Find and understand the presence records available to each role in your team.',
+    description: 'Find and understand the attendance records available to your organisation and team.',
     articlesCount: 3,
   },
   {
     id: 'plans-billing',
     title: 'Plans and billing',
-    description: 'Learn about workforce bands, subscriptions, receipts, and payment options.',
+    description: 'Learn about team sizes, subscriptions, receipts and payment options.',
     articlesCount: 4,
   },
 ];
