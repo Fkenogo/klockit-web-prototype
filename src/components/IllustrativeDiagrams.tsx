@@ -525,9 +525,7 @@ export function IllustrativeRecordDiagram({ className = '' }: { className?: stri
 }
 
 /**
- * Interactive diagram showing the two attendance methods side-by-side:
- * Method 1: Worker uses smartphone to scan Site QR poster.
- * Method 2: Worker presents QR card to shared site tablet ("Not every worker needs a smartphone").
+ * Interactive diagram showing the two attendance methods and their four phone/shared-device options.
  */
 export function TwoMethodsInteractiveDiagram() {
   const [activeTab, setActiveTab] = useState<'phone-site-qr' | 'device-worker-qr' | 'phone-worker-ref' | 'device-worker-ref'>('phone-site-qr');
