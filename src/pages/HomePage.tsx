@@ -31,7 +31,7 @@ export function HomePage({
   onOpenTrialModal,
   onOpenContactModal,
 }: HomePageProps) {
-  const previewCurrency: CurrencyCode = 'USD';
+  const previewCurrency: CurrencyCode = 'KES';
 
   return (
     <div className="space-y-24 pb-20">
@@ -53,7 +53,7 @@ export function HomePage({
               </h1>
 
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-                Klockit brings planned work and recorded attendance together across an organisation’s Sites. A clear, credible presence record for business owners, managers, and workers.
+                Klockit helps you see planned shifts alongside recorded arrivals and departures across your work locations. Your team can check their own attendance records too.
               </p>
 
               {/* Primary Call to Action Block */}
@@ -87,15 +87,15 @@ export function HomePage({
               {/* Trust signals */}
               <div className="pt-4 border-t border-slate-200/80 grid grid-cols-3 gap-3 text-xs text-slate-600">
                 <div>
-                  <div className="font-bold text-[#0A266B] text-xs">Evidence-based</div>
-                  <div className="text-slate-500 text-[11px] mt-0.5">Verified arrival timestamps</div>
+                  <div className="font-bold text-[#0A266B] text-xs">Clear attendance records</div>
+                  <div className="text-slate-500 text-[11px] mt-0.5">Arrival and departure times</div>
                 </div>
                 <div>
-                  <div className="font-bold text-[#0A266B] text-xs">Fair to workers</div>
+                  <div className="font-bold text-[#0A266B] text-xs">Workers can see their records</div>
                   <div className="text-slate-500 text-[11px] mt-0.5">Workers see own records</div>
                 </div>
                 <div>
-                  <div className="font-bold text-[#0A266B] text-xs">Not surveillance</div>
+                  <div className="font-bold text-[#0A266B] text-xs">Attendance, not location tracking</div>
                   <div className="text-slate-500 text-[11px] mt-0.5">No continuous tracking</div>
                 </div>
               </div>
@@ -120,13 +120,13 @@ export function HomePage({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="max-w-3xl space-y-3">
             <div className="text-xs font-bold text-[#009FF5] uppercase tracking-wider">
-              Flexible Workplace Attendance
+              Attendance that fits your workplace
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A266B] tracking-tight">
               Two ways to record attendance. One clear record.
             </h2>
             <p className="text-base text-slate-600 leading-relaxed">
-              Every workplace is different. Klockit allows workers with smartphones to scan a Site QR poster, while workers without personal smartphones use an individual QR card at an organisation-controlled shared device. Both feed into the same verified log.
+              Choose QR code or Manual Worker Ref. Workers can record attendance on their own phone or use a shared device at the Site. Both methods add to the organisation’s attendance records.
             </p>
           </div>
 
@@ -139,13 +139,13 @@ export function HomePage({
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="max-w-3xl space-y-3">
           <div className="text-xs font-bold text-[#009FF5] uppercase tracking-wider">
-            Presence Accountability
+            A clearer view of the workday
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A266B] tracking-tight">
             Review planned work alongside recorded arrivals and departures.
           </h2>
           <p className="text-base text-slate-600 leading-relaxed">
-            Attendance disputes happen when expected work and recorded reality are disconnected. Klockit gives managers a calm, factual view of scheduled shifts and verified physical attendance.
+            See planned shifts alongside recorded arrivals, departures and sessions that may need review. Managers can understand how attendance is matching the plan and add context where needed.
           </p>
         </div>
 
@@ -159,7 +159,7 @@ export function HomePage({
               Grounded in evidence
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Bring expected work and recorded workforce events into a consistent attendance record with authentic physical site timestamps.
+              Compare planned shifts with recorded arrival and departure times in one attendance record.
             </p>
           </div>
 
@@ -183,7 +183,7 @@ export function HomePage({
               Useful to workers too
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Workers can access their own attendance information anytime, eliminating guesswork, lost hours, and end-of-month attendance disputes.
+              Workers can check their own attendance records, so they can see the same recorded information as their organisation.
             </p>
           </div>
 
@@ -195,7 +195,7 @@ export function HomePage({
               Focused boundaries
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Klockit helps organisations understand workforce presence. It is strictly not payroll, not full HR, and not a worker surveillance tool.
+              Klockit helps your organisation keep track of attendance. It is not payroll or a full HR system.
             </p>
           </div>
         </div>
@@ -210,7 +210,7 @@ export function HomePage({
                 Straightforward Pricing
               </div>
               <h2 className="text-3xl font-extrabold text-[#0A266B] tracking-tight">
-                Priced by Accounted Workers, not Site count.
+                Priced by workers, not Site count.
               </h2>
               <p className="text-sm text-slate-600 leading-relaxed">
                 Add as many Sites as your organisation needs without extra fees. Every standard plan includes the exact same core Klockit product.
