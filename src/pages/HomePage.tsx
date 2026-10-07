@@ -43,7 +43,7 @@ export function HomePage({
             <div className="lg:col-span-5 space-y-6">
               {/* Quiet editorial kicker (zero-pill text discipline) */}
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 tracking-wide uppercase">
-                <span>Workforce Presence Platform</span>
+                <span>Attendance management for organisations</span>
                 <span aria-hidden="true">·</span>
                 <span>East Africa & Global</span>
               </div>
@@ -171,7 +171,7 @@ export function HomePage({
               Context matters
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Give authorised Managers a way to review situations that need explanation, including legitimate field deployments and approved exceptions.
+              Managers can review attendance that differs from the plan and add context when needed.
             </p>
           </div>
 
@@ -213,7 +213,7 @@ export function HomePage({
                 Priced by workers, not Site count.
               </h2>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Add as many Sites as your organisation needs without extra fees. Every standard plan includes the exact same core Klockit product.
+                Every standard plan includes the same core Klockit product. Your price is based on the number of workers in your organisation.
               </p>
             </div>
 
@@ -347,7 +347,7 @@ export function HomePage({
             <div className="space-y-2 text-xs text-slate-600">
               <div className="font-semibold text-slate-900 text-sm flex items-center gap-1.5">
                 <CheckCircle2 size={16} className="text-emerald-600" />
-                <span>14-day automatic trial</span>
+                <span>14-day free trial</span>
               </div>
               <p>
                 Your 14-day trial starts when you sign up. No credit card required.
