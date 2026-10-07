@@ -128,7 +128,7 @@ export function IllustrativeRecordDiagram({ className = '' }: { className?: stri
         <div className="flex items-center gap-2 truncate">
           <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
           <span className="font-semibold text-white truncate text-[11px] sm:text-xs">
-            Evaluation Institution · K-76CE1F5C54E2
+            Demo Organisation · Example attendance
           </span>
         </div>
 
@@ -496,7 +496,7 @@ export function IllustrativeRecordDiagram({ className = '' }: { className?: stri
                 <span className="font-semibold text-[#0A266B]">{inspectedWorker.status}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-50">
-                <span className="text-slate-500">Verification Flow:</span>
+                <span className="text-slate-500">Attendance method:</span>
                 <span className="font-semibold text-slate-800">{inspectedWorker.method}</span>
               </div>
             </div>
