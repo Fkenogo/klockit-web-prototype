@@ -11,9 +11,7 @@ import {
   FileCheck2,
   Sparkles,
   HelpCircle,
-  Globe,
   Clock,
-  Check,
 } from 'lucide-react';
 import { KlockitIcon } from './Brand';
 import { PLAN_BANDS, CURRENCIES, CurrencyCode } from '../data/klockitData';
@@ -27,24 +25,73 @@ interface CountryOption {
   code: string;
   name: string;
   currency: CurrencyCode;
-  timezone: string;
+  ianaTimezone: string;
+  displayTimezone: string;
 }
 
 const COUNTRIES: CountryOption[] = [
-  { code: 'KE', name: 'Kenya', currency: 'KES', timezone: 'Africa/Nairobi (EAT / UTC+3)' },
-  { code: 'UG', name: 'Uganda', currency: 'UGX', timezone: 'Africa/Kampala (EAT / UTC+3)' },
-  { code: 'RW', name: 'Rwanda', currency: 'RWF', timezone: 'Africa/Kigali (CAT / UTC+2)' },
-  { code: 'BI', name: 'Burundi', currency: 'BIF', timezone: 'Africa/Bujumbura (CAT / UTC+2)' },
-  { code: 'INT', name: 'International / Other', currency: 'USD', timezone: 'UTC (Coordinated Universal Time)' },
+  {
+    code: 'KE',
+    name: 'Kenya',
+    currency: 'KES',
+    ianaTimezone: 'Africa/Nairobi',
+    displayTimezone: 'Africa/Nairobi (EAT / UTC+3)',
+  },
+  {
+    code: 'UG',
+    name: 'Uganda',
+    currency: 'UGX',
+    ianaTimezone: 'Africa/Kampala',
+    displayTimezone: 'Africa/Kampala (EAT / UTC+3)',
+  },
+  {
+    code: 'RW',
+    name: 'Rwanda',
+    currency: 'RWF',
+    ianaTimezone: 'Africa/Kigali',
+    displayTimezone: 'Africa/Kigali (CAT / UTC+2)',
+  },
+  {
+    code: 'BI',
+    name: 'Burundi',
+    currency: 'BIF',
+    ianaTimezone: 'Africa/Bujumbura',
+    displayTimezone: 'Africa/Bujumbura (CAT / UTC+2)',
+  },
+  {
+    code: 'INT',
+    name: 'International / Other',
+    currency: 'USD',
+    ianaTimezone: 'UTC',
+    displayTimezone: 'UTC (Coordinated Universal Time)',
+  },
 ];
 
-const LANGUAGES = [
-  'English',
-  'Swahili (Kiswahili)',
-  'French (Français)',
-  'Kinyarwanda',
-  'Kirundi',
-];
+// Supported languages restricted strictly to English and French (Français)
+const LANGUAGES = ['English', 'French (Français)'];
+
+// Approved Version-1 Authority Declaration text from canonical Klockit contract
+export const APPROVED_AUTHORITY_DECLARATION_VERSION = 'v1';
+export const APPROVED_AUTHORITY_DECLARATION_TEXT =
+  'I confirm that I am authorised to set up and administer Klockit for this organisation.';
+
+// Simulated registrant session identity for prototype preview
+const SIMULATED_REGISTRANT = {
+  name: 'Simulated Registrant',
+  email: 'simulated.registrant@example.com',
+  sessionType: 'Prototype Simulation Session',
+};
+
+// Generates a preview reference conforming to canonical Klockit contract:
+// K- followed by 12 uppercase hexadecimal characters (e.g., K-3F8E1D9A2C0B)
+function generateSimulatedKlockitReference(): string {
+  const hexChars = '0123456789ABCDEF';
+  let hex = '';
+  for (let i = 0; i < 12; i++) {
+    hex += hexChars.charAt(Math.floor(Math.random() * hexChars.length));
+  }
+  return `K-${hex}`;
+}
 
 export function TrialModal({ isOpen, onClose }: TrialModalProps) {
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
@@ -55,8 +102,8 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
     businessName: '',
     country: 'Kenya',
     city: 'Nairobi',
-    timezone: 'Africa/Nairobi (EAT / UTC+3)',
-    declaredWorkforceSize: '0', // Supports 0 explicitly
+    timezone: 'Africa/Nairobi', // Valid IANA identifier
+    declaredWorkforceSize: '0', // Supports 0 explicitly (non-negative integer)
     preferredLanguage: 'English',
 
     // Step 2: Primary Business Contact
@@ -65,12 +112,10 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
     contactEmail: '',
     contactPhone: '',
 
-    // Step 3: Subscription Information
-    selectedPlanId: 'decide_later', // 'decide_later' or plan band ID
+    // Step 3: Subscription Information (Optional intended plan during establishment)
+    selectedPlanId: 'decide_later',
 
     // Step 4: Administrator Identity & Authority
-    administratorName: 'Theo Kenogo',
-    administratorEmail: 'theo.kenogo@company.com',
     isRegistrantDesignatedAdmin: true,
     authorityAccepted: false,
   });
@@ -89,9 +134,18 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
       setForm((prev) => ({
         ...prev,
         country: countryName,
-        timezone: selected.timezone,
+        timezone: selected.ianaTimezone,
       }));
     }
+  };
+
+  const handleBusinessNameChange = (name: string) => {
+    setForm((prev) => ({
+      ...prev,
+      businessName: name,
+      // Invalidate declaration acceptance if business name changes
+      authorityAccepted: false,
+    }));
   };
 
   const validateStep = (currentStep: number): boolean => {
@@ -104,8 +158,14 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
       if (!form.city.trim()) {
         errs.city = 'City or operating locality is required.';
       }
-      if (form.declaredWorkforceSize === '' || Number(form.declaredWorkforceSize) < 0) {
-        errs.declaredWorkforceSize = 'Workforce size is required (enter 0 if establishing before staffing).';
+      const trimmedSize = form.declaredWorkforceSize.trim();
+      const parsedSize = Number(trimmedSize);
+      if (trimmedSize === '' || !Number.isInteger(parsedSize) || parsedSize < 0) {
+        errs.declaredWorkforceSize =
+          'Workforce size must be a non-negative whole number (enter 0 if establishing prior to hiring).';
+      }
+      if (!LANGUAGES.includes(form.preferredLanguage)) {
+        errs.preferredLanguage = 'Please select a supported language (English or French).';
       }
     } else if (currentStep === 2) {
       if (!form.contactName.trim()) {
@@ -114,8 +174,9 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
       if (!form.contactRole.trim()) {
         errs.contactRole = 'Role or relationship to the business is required.';
       }
-      if (!form.contactEmail.trim() || !form.contactEmail.includes('@')) {
-        errs.contactEmail = 'A valid business contact email is required.';
+      const emailTrimmed = form.contactEmail.trim();
+      if (!emailTrimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)) {
+        errs.contactEmail = 'A valid business contact email address is required.';
       }
       if (!form.contactPhone.trim()) {
         errs.contactPhone = 'Telephone number is required.';
@@ -125,10 +186,12 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
       // No mandatory errors; defaults to 'decide_later'
     } else if (currentStep === 4) {
       if (!form.isRegistrantDesignatedAdmin) {
-        errs.isRegistrantDesignatedAdmin = 'The authenticated registrant must be designated as the initial Administrator.';
+        errs.isRegistrantDesignatedAdmin =
+          'The authenticated registrant must be designated as the initial Administrator.';
       }
       if (!form.authorityAccepted) {
-        errs.authorityAccepted = 'Explicit acceptance of the lawful authority declaration is required.';
+        errs.authorityAccepted =
+          'Explicit affirmative acceptance of the approved authority declaration (v1) is required.';
       }
     }
 
@@ -140,9 +203,9 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
     if (!validateStep(step)) return;
 
     if (step === 4) {
-      const code = currentCountry.code;
-      const randomDigits = Math.floor(1000 + Math.random() * 9000);
-      setGeneratedRef(`KLO-${randomDigits}-${code}`);
+      // Generate simulated reference conforming to canonical Klockit reference format (K-XXXXXXXXXXXX)
+      const ref = generateSimulatedKlockitReference();
+      setGeneratedRef(ref);
       setStep(5);
     } else {
       setStep((s) => (s + 1) as 1 | 2 | 3 | 4 | 5);
@@ -157,6 +220,19 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
   const handleReset = () => {
     setStep(1);
     setErrors({});
+    setGeneratedRef('');
+    setForm((prev) => ({
+      ...prev,
+      businessName: '',
+      declaredWorkforceSize: '0',
+      contactName: '',
+      contactRole: '',
+      contactEmail: '',
+      contactPhone: '',
+      selectedPlanId: 'decide_later',
+      authorityAccepted: false,
+      isRegistrantDesignatedAdmin: true,
+    }));
     onClose();
   };
 
@@ -247,7 +323,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                   <span>Business Information</span>
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Register your business identity, legal jurisdiction, and timezone for physical presence records.
+                  Register your business identity, operating jurisdiction, and authoritative time zone for physical attendance records.
                 </p>
               </div>
 
@@ -261,7 +337,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                     required
                     placeholder="e.g. Great Lakes Distribution Ltd"
                     value={form.businessName}
-                    onChange={(e) => setForm({ ...form, businessName: e.target.value })}
+                    onChange={(e) => handleBusinessNameChange(e.target.value)}
                     className={`w-full px-3 py-2 bg-slate-50 border rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white ${
                       errors.businessName ? 'border-rose-400 bg-rose-50/40' : 'border-slate-200'
                     }`}
@@ -315,12 +391,12 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                       <input
                         type="text"
                         readOnly
-                        value={form.timezone}
+                        value={currentCountry.displayTimezone}
                         className="w-full pl-8 pr-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs text-slate-700 font-mono"
                       />
                     </div>
                     <p className="text-[10px] text-slate-400 mt-1">
-                      Authoritative reference for all QR presence timestamps.
+                      Persisted as IANA identifier: <code className="font-mono text-slate-600">{form.timezone}</code>
                     </p>
                   </div>
 
@@ -331,6 +407,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                     <input
                       type="number"
                       min="0"
+                      step="1"
                       required
                       value={form.declaredWorkforceSize}
                       onChange={(e) => setForm({ ...form, declaredWorkforceSize: e.target.value })}
@@ -339,7 +416,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                       }`}
                     />
                     <p className="text-[10px] text-slate-500 mt-1">
-                      Declared size includes <strong>zero</strong> for entities establishing before hiring.
+                      Supports <strong>zero</strong> for entities establishing before staffing.
                     </p>
                     {errors.declaredWorkforceSize && (
                       <p className="text-[11px] text-rose-600 mt-1">{errors.declaredWorkforceSize}</p>
@@ -348,7 +425,9 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Preferred Language</label>
+                  <label className="block font-semibold text-slate-700 mb-1">
+                    Preferred Language <span className="text-rose-500">*</span>
+                  </label>
                   <select
                     value={form.preferredLanguage}
                     onChange={(e) => setForm({ ...form, preferredLanguage: e.target.value })}
@@ -360,6 +439,12 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                       </option>
                     ))}
                   </select>
+                  <p className="text-[10px] text-slate-400 mt-1">
+                    Restricted to platform-supported languages (English and French).
+                  </p>
+                  {errors.preferredLanguage && (
+                    <p className="text-[11px] text-rose-600 mt-1">{errors.preferredLanguage}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -374,7 +459,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                   <span>Primary Business Contact</span>
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Point of contact for business correspondence, billing communications, and notices.
+                  Point of contact for business correspondence, billing communications, and operational notices.
                 </p>
               </div>
 
@@ -384,7 +469,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 <div className="leading-relaxed">
                   <span className="font-bold text-[#0A266B]">Contact details do not determine Administrator authority.</span>
                   <p className="text-[11px] text-slate-600 mt-0.5">
-                    This contact provides business reachability. Platform governance authority is explicitly designated in Step 4.
+                    This contact provides business reachability only. Platform governance authority is explicitly designated in Step 4.
                   </p>
                 </div>
               </div>
@@ -431,7 +516,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                   <input
                     type="email"
                     required
-                    placeholder="fiona@company.com"
+                    placeholder="contact@company.com"
                     value={form.contactEmail}
                     onChange={(e) => setForm({ ...form, contactEmail: e.target.value })}
                     className={`w-full px-3 py-2 bg-slate-50 border rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white ${
@@ -471,7 +556,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                     <span>Subscription Information</span>
                   </h4>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    Commercial workforce plans in {currencyConfig.label}. Intended tier selection is optional.
+                    Commercial workforce plans in {currencyConfig.label}. Intended tier selection is optional during establishment.
                   </p>
                 </div>
                 <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -479,17 +564,17 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 </span>
               </div>
 
-              {/* Automatic Evaluation Trial Notice */}
+              {/* Automatic Evaluation Trial Notice — Cleaned of unauthorized worker allowance claims */}
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1">
                 <div className="flex items-center gap-2 font-bold text-[#0A266B]">
                   <Sparkles size={15} className="text-[#009FF5]" />
                   <span>Approved 14-Day Evaluation Trial Included</span>
                 </div>
                 <p className="text-slate-600 text-[11px] leading-relaxed">
-                  Every new organisation begins with an automatic 14-day evaluation trial (up to 25 workers) with full presence features. Payment details are never a condition of establishing your business.
+                  Every newly established organisation begins with an automatic 14-day evaluation trial with full presence features. Payment details and subscription confirmation are never a condition of business establishment.
                 </p>
                 <p className="text-[10px] text-slate-400 mt-1 italic">
-                  Simulated commercial plan review for website prototype — no payment gateway or real transactions involved.
+                  Commercial plan review in website prototype — no payment gateway or real transactions involved.
                 </p>
               </div>
 
@@ -552,7 +637,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-500">
-                    Explore attendance operations with 14 days full access. Select an ongoing plan whenever you are ready.
+                    Explore attendance operations with 14 days full access. Select an ongoing tier whenever your organisation is ready.
                   </p>
                 </div>
                 <input
@@ -575,28 +660,34 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                   <span>Administrator Identity & Authority</span>
                 </h4>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Designate the initial Administrator and execute the approved legal authority declaration.
+                  Designate the initial Administrator and affirm the approved version-1 authority declaration.
                 </p>
               </div>
 
-              {/* Authenticated Registrant Context */}
+              {/* Clearly Marked Simulated Registrant Session Context */}
               <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-lg bg-[#0A266B] text-white font-bold flex items-center justify-center text-xs">
-                      TK
+                      SR
                     </div>
                     <div>
-                      <p className="font-bold text-xs text-slate-900">Authenticated Registrant</p>
-                      <p className="text-[11px] text-slate-600">
-                        {form.administratorName} · <span className="font-mono text-slate-500">{form.administratorEmail}</span>
+                      <p className="font-bold text-xs text-slate-900">
+                        {SIMULATED_REGISTRANT.name}{' '}
+                        <span className="font-normal text-slate-500">(Prototype Preview)</span>
+                      </p>
+                      <p className="text-[11px] text-slate-600 font-mono">
+                        {SIMULATED_REGISTRANT.email}
                       </p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
-                    Verified Session
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-800 border border-sky-200">
+                    Simulation Identity
                   </span>
                 </div>
+                <p className="text-[10px] text-slate-500 italic">
+                  In production, the authenticated session (e.g. Firebase Auth) supplies the verified identity. Contact details do not determine Administrator authority.
+                </p>
 
                 <div className="pt-2.5 border-t border-slate-200">
                   <label className="flex items-start gap-2.5 cursor-pointer">
@@ -608,11 +699,10 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                     />
                     <div className="text-xs">
                       <span className="font-bold text-slate-900">
-                        Explicitly designate authenticated registrant as First Administrator
+                        Explicitly designate authenticated registrant as Initial Administrator
                       </span>
                       <p className="text-[11px] text-slate-500 mt-0.5">
                         Confers governance authority over workforce registration, site QR management, and attendance verification.
-                        Contact details do not determine authority.
                       </p>
                     </div>
                   </label>
@@ -622,24 +712,24 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 </div>
               </div>
 
-              {/* Approved Authority Declaration Box */}
+              {/* Exact Approved Version-1 Authority Declaration Box */}
               <div className="p-3.5 bg-sky-50/60 rounded-xl border border-sky-100 space-y-2.5">
-                <div className="flex items-center gap-2 text-[#0A266B] font-bold text-xs">
-                  <FileCheck2 size={16} className="text-[#009FF5]" />
-                  <span>Approved Authority Declaration</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-[#0A266B] font-bold text-xs">
+                    <FileCheck2 size={16} className="text-[#009FF5]" />
+                    <span>Approved Authority Declaration</span>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white text-[#0A266B] border border-sky-200">
+                    Version: {APPROVED_AUTHORITY_DECLARATION_VERSION}
+                  </span>
                 </div>
-                <div className="p-3 bg-white rounded-lg border border-sky-100 text-xs text-slate-700 leading-relaxed font-sans space-y-1.5 max-h-36 overflow-y-auto">
-                  <p className="font-bold text-slate-900">
-                    Declaration of Lawful Authority:
+
+                <div className="p-3.5 bg-white rounded-lg border border-sky-200 text-xs text-slate-800 font-medium leading-relaxed">
+                  <p className="text-slate-900 italic font-serif text-sm">
+                    "{APPROVED_AUTHORITY_DECLARATION_TEXT}"
                   </p>
-                  <p>
-                    I hereby declare and warrant that I am duly authorised by{' '}
-                    <span className="font-bold text-slate-900 underline">{form.businessName || 'the organisation'}</span> to
-                    register this business with Klockit, to designate its initial Administrator, and to agree to the Klockit Terms of Service.
-                  </p>
-                  <p>
-                    I acknowledge that Klockit is dedicated strictly to physical work presence and attendance verification.
-                    Attendance evidence is recorded honestly through physical QR verification and managed exceptions.
+                  <p className="text-[10px] text-slate-500 font-sans mt-2 pt-2 border-t border-slate-100">
+                    Organisation: <strong>{form.businessName || 'Declared Business'}</strong>
                   </p>
                 </div>
 
@@ -652,7 +742,8 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                       className="w-4 h-4 text-[#009FF5] rounded focus:ring-[#009FF5] mt-0.5"
                     />
                     <span className="text-xs font-bold text-[#0A266B]">
-                      I accept this authority declaration on behalf of {form.businessName || 'this business'} <span className="text-rose-500">*</span>
+                      I confirm and accept this authority declaration on behalf of{' '}
+                      <span className="underline">{form.businessName || 'this organisation'}</span> <span className="text-rose-500">*</span>
                     </span>
                   </label>
                   {errors.authorityAccepted && (
@@ -673,13 +764,16 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
               <div>
                 <h4 className="text-lg font-black text-[#0A266B]">Organisation Established</h4>
                 <p className="text-xs text-slate-500 mt-1">
-                  Klockit reference generated and approved 14-day evaluation trial automatically activated.
+                  Simulated establishment record created and approved 14-day evaluation trial automatically activated.
                 </p>
               </div>
 
               <div className="max-w-md mx-auto bg-slate-50 border border-slate-200 rounded-xl p-4 text-left space-y-2.5 text-xs">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-                  <span className="text-slate-500 font-medium">Organisation Reference:</span>
+                  <div className="flex flex-col">
+                    <span className="text-slate-500 font-medium">Organisation Reference:</span>
+                    <span className="text-[10px] text-slate-400">Simulated preview identifier</span>
+                  </div>
                   <span className="font-mono font-black text-[#0A266B] bg-sky-50 px-2 py-0.5 rounded border border-sky-200 text-xs">
                     {generatedRef}
                   </span>
@@ -693,7 +787,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-slate-500">Jurisdiction & Timezone:</span>
                   <span className="font-medium text-slate-700">
-                    {form.city}, {form.country} ({form.timezone.split(' ')[0]})
+                    {form.city}, {form.country} (<code className="font-mono text-xs">{form.timezone}</code>)
                   </span>
                 </div>
 
@@ -703,8 +797,13 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Designated Administrator:</span>
-                  <span className="font-bold text-slate-900">{form.administratorName}</span>
+                  <span className="text-slate-500">Designated Initial Admin:</span>
+                  <span className="font-bold text-slate-900">{SIMULATED_REGISTRANT.name}</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">Declaration Version:</span>
+                  <span className="font-medium text-slate-700">v1 (Accepted)</span>
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t border-slate-200">
@@ -713,6 +812,14 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                     Active Evaluation Trial (14 Days)
                   </span>
                 </div>
+              </div>
+
+              {/* Explicit Platform Contract Distinction Disclaimer */}
+              <div className="max-w-md mx-auto p-3 bg-amber-50/70 border border-amber-200 rounded-xl text-left text-[11px] text-amber-900 leading-relaxed">
+                <span className="font-bold">Prototype Demonstration Notice:</span>
+                <p className="mt-0.5 text-amber-800">
+                  This preview simulates the onboarding journey. In production, authoritative Organisation references (format <code className="font-mono font-semibold">K-XXXXXXXXXXXX</code>) are issued strictly by the Klockit platform kernel upon verified transactional establishment.
+                </p>
               </div>
 
               <div className="pt-2 space-y-2">
@@ -725,7 +832,7 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
                   <ArrowRight size={16} />
                 </button>
                 <p className="text-[11px] text-slate-400 text-center max-w-sm mx-auto">
-                  Simulated onboarding completion. In production, this completes registration and directs the authenticated Administrator into their initial workspace.
+                  Completes prototype simulation. In production, this finalises establishment and directs the authenticated initial Administrator to their workspace.
                 </p>
               </div>
             </div>
