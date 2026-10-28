@@ -1,59 +1,191 @@
 import React, { useState } from 'react';
-import { X, CheckCircle2, Building2, MapPin, User, ArrowRight, ShieldCheck } from 'lucide-react';
+import {
+  X,
+  CheckCircle2,
+  Building2,
+  User,
+  ArrowRight,
+  ArrowLeft,
+  ShieldCheck,
+  CreditCard,
+  FileCheck2,
+  Sparkles,
+  HelpCircle,
+  Globe,
+  Clock,
+  Check,
+} from 'lucide-react';
 import { KlockitIcon } from './Brand';
+import { PLAN_BANDS, CURRENCIES, CurrencyCode } from '../data/klockitData';
 
-interface TrialModalProps {
+export interface TrialModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+interface CountryOption {
+  code: string;
+  name: string;
+  currency: CurrencyCode;
+  timezone: string;
+}
+
+const COUNTRIES: CountryOption[] = [
+  { code: 'KE', name: 'Kenya', currency: 'KES', timezone: 'Africa/Nairobi (EAT / UTC+3)' },
+  { code: 'UG', name: 'Uganda', currency: 'UGX', timezone: 'Africa/Kampala (EAT / UTC+3)' },
+  { code: 'RW', name: 'Rwanda', currency: 'RWF', timezone: 'Africa/Kigali (CAT / UTC+2)' },
+  { code: 'BI', name: 'Burundi', currency: 'BIF', timezone: 'Africa/Bujumbura (CAT / UTC+2)' },
+  { code: 'INT', name: 'International / Other', currency: 'USD', timezone: 'UTC (Coordinated Universal Time)' },
+];
+
+const LANGUAGES = [
+  'English',
+  'Swahili (Kiswahili)',
+  'French (Français)',
+  'Kinyarwanda',
+  'Kirundi',
+];
+
 export function TrialModal({ isOpen, onClose }: TrialModalProps) {
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
-  const [formData, setFormData] = useState({
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
+
+  // Form State
+  const [form, setForm] = useState({
+    // Step 1: Organisation Details
     businessName: '',
     country: 'Kenya',
-    firstSiteName: 'Main Workshop / Office',
-    adminName: '',
-    adminEmail: '',
-    expectedWorkers: '10–19',
+    city: 'Nairobi',
+    timezone: 'Africa/Nairobi (EAT / UTC+3)',
+    declaredWorkforceSize: '0', // Supports 0 explicitly
+    preferredLanguage: 'English',
+
+    // Step 2: Primary Business Contact
+    contactName: '',
+    contactRole: '',
+    contactEmail: '',
+    contactPhone: '',
+
+    // Step 3: Subscription Information
+    selectedPlanId: 'decide_later', // 'decide_later' or plan band ID
+
+    // Step 4: Administrator Identity & Authority
+    administratorName: 'Theo Kenogo',
+    administratorEmail: 'theo.kenogo@company.com',
+    isRegistrantDesignatedAdmin: true,
+    authorityAccepted: false,
   });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [generatedRef, setGeneratedRef] = useState<string>('');
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (step < 3) {
-      setStep((s) => (s + 1) as 2 | 3);
-    } else {
-      setStep(4);
+  const currentCountry = COUNTRIES.find((c) => c.name === form.country) || COUNTRIES[0];
+  const currencyConfig = CURRENCIES[currentCountry.currency];
+
+  const handleCountryChange = (countryName: string) => {
+    const selected = COUNTRIES.find((c) => c.name === countryName);
+    if (selected) {
+      setForm((prev) => ({
+        ...prev,
+        country: countryName,
+        timezone: selected.timezone,
+      }));
     }
+  };
+
+  const validateStep = (currentStep: number): boolean => {
+    const errs: Record<string, string> = {};
+
+    if (currentStep === 1) {
+      if (!form.businessName.trim()) {
+        errs.businessName = 'Organisation / Business name is required.';
+      }
+      if (!form.city.trim()) {
+        errs.city = 'City or operating locality is required.';
+      }
+      if (form.declaredWorkforceSize === '' || Number(form.declaredWorkforceSize) < 0) {
+        errs.declaredWorkforceSize = 'Workforce size is required (enter 0 if establishing before staffing).';
+      }
+    } else if (currentStep === 2) {
+      if (!form.contactName.trim()) {
+        errs.contactName = 'Primary contact name is required.';
+      }
+      if (!form.contactRole.trim()) {
+        errs.contactRole = 'Role or relationship to the business is required.';
+      }
+      if (!form.contactEmail.trim() || !form.contactEmail.includes('@')) {
+        errs.contactEmail = 'A valid business contact email is required.';
+      }
+      if (!form.contactPhone.trim()) {
+        errs.contactPhone = 'Telephone number is required.';
+      }
+    } else if (currentStep === 3) {
+      // Step 3: Subscription information is optional during establishment
+      // No mandatory errors; defaults to 'decide_later'
+    } else if (currentStep === 4) {
+      if (!form.isRegistrantDesignatedAdmin) {
+        errs.isRegistrantDesignatedAdmin = 'The authenticated registrant must be designated as the initial Administrator.';
+      }
+      if (!form.authorityAccepted) {
+        errs.authorityAccepted = 'Explicit acceptance of the lawful authority declaration is required.';
+      }
+    }
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleNext = () => {
+    if (!validateStep(step)) return;
+
+    if (step === 4) {
+      const code = currentCountry.code;
+      const randomDigits = Math.floor(1000 + Math.random() * 9000);
+      setGeneratedRef(`KLO-${randomDigits}-${code}`);
+      setStep(5);
+    } else {
+      setStep((s) => (s + 1) as 1 | 2 | 3 | 4 | 5);
+    }
+  };
+
+  const handleBack = () => {
+    setErrors({});
+    setStep((s) => Math.max(1, s - 1) as 1 | 2 | 3 | 4 | 5);
   };
 
   const handleReset = () => {
     setStep(1);
+    setErrors({});
     onClose();
   };
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+      id="onboarding-trial-modal"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity overflow-y-auto"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="trial-modal-title"
+      aria-labelledby="onboarding-modal-title"
     >
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col my-auto max-h-[92vh]">
         {/* Header bar */}
-        <div className="px-6 py-5 bg-[#0A266B] text-white flex items-center justify-between">
+        <div className="px-5 sm:px-6 py-4 bg-[#0A266B] text-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-1.5 bg-white/10 rounded-lg">
+            <div className="p-1.5 bg-white/10 rounded-lg shrink-0">
               <KlockitIcon size={24} />
             </div>
             <div>
-              <h3 id="trial-modal-title" className="text-base font-bold text-white">
-                Start your 14-day free trial
-              </h3>
-              <p className="text-xs text-sky-200">
-                Starts as soon as you sign up · No credit card required
+              <div className="flex items-center gap-2">
+                <h3 id="onboarding-modal-title" className="text-base font-bold text-white tracking-tight">
+                  Establish Organisation
+                </h3>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/15 text-sky-200 border border-white/20">
+                  Onboarding Prototype
+                </span>
+              </div>
+              <p className="text-xs text-sky-200 mt-0.5">
+                Approved business registration specification & automatic 14-day evaluation trial.
               </p>
             </div>
           </div>
@@ -66,220 +198,567 @@ export function TrialModal({ isOpen, onClose }: TrialModalProps) {
           </button>
         </div>
 
-        {step === 4 ? (
-          /* Confirmation State */
-          <div className="p-8 text-center space-y-5">
-            <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto border border-emerald-100">
-              <CheckCircle2 size={32} />
-            </div>
-            <div className="space-y-2">
-              <h4 className="text-xl font-bold text-[#0A266B]">
-                Your 14-day trial has begun
-              </h4>
-              <p className="text-sm text-slate-600 max-w-sm mx-auto">
-                <strong className="text-slate-800">{formData.businessName || 'Your Organisation'}</strong> is set up with initial Site <strong className="text-slate-800">{formData.firstSiteName || 'Site 1'}</strong>.
-              </p>
-            </div>
-
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-left text-xs space-y-2">
-              <div className="flex justify-between text-slate-600">
-                <span>Account Administrator:</span>
-                <span className="font-semibold text-slate-800">{formData.adminEmail || 'admin@company.com'}</span>
-              </div>
-              <div className="flex justify-between text-slate-600">
-                <span>Number of workers:</span>
-                <span className="font-semibold text-slate-800">{formData.expectedWorkers} workers</span>
-              </div>
-              <div className="flex justify-between text-slate-600">
-                <span>Trial Validity:</span>
-                <span className="font-semibold text-emerald-700">14 Full Days (No payment due)</span>
-              </div>
-            </div>
-
-            <p className="text-xs text-slate-500">
-              Your organisation keeps access to its dashboard and attendance history if the trial ends. New attendance recording pauses until you reactivate.
-            </p>
-
-            <button
-              onClick={handleReset}
-              className="w-full py-3 px-4 bg-[#0A266B] hover:bg-[#071c4f] text-white font-medium text-sm rounded-xl transition-colors shadow-sm"
-            >
-              Continue to Prototype
-            </button>
+        {/* Step Progress Indicators */}
+        <div className="bg-slate-50 px-5 sm:px-6 py-2.5 border-b border-slate-200 shrink-0">
+          <div className="flex items-center justify-between">
+            {[
+              { num: 1, label: 'Organisation' },
+              { num: 2, label: 'Primary Contact' },
+              { num: 3, label: 'Subscription' },
+              { num: 4, label: 'Administrator & Authority' },
+              { num: 5, label: 'Confirmation' },
+            ].map((s) => {
+              const isActive = step === s.num;
+              const isPast = step > s.num;
+              return (
+                <div key={s.num} className="flex items-center gap-1.5">
+                  <div
+                    className={`w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center transition-colors ${
+                      isPast
+                        ? 'bg-emerald-600 text-white'
+                        : isActive
+                        ? 'bg-[#009FF5] text-white shadow-2xs'
+                        : 'bg-slate-200 text-slate-600'
+                    }`}
+                  >
+                    {isPast ? '✓' : s.num}
+                  </div>
+                  <span
+                    className={`text-xs hidden md:inline font-medium ${
+                      isActive ? 'text-[#0A266B] font-bold' : isPast ? 'text-slate-700' : 'text-slate-400'
+                    }`}
+                  >
+                    {s.label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="p-6 space-y-5">
-            {/* Step Indicators */}
-            <div className="flex items-center justify-between text-xs font-medium text-slate-500 pb-2 border-b border-slate-100">
-              <span className={step >= 1 ? 'text-[#0A266B] font-semibold' : ''}>
-                1. Organisation
-              </span>
-              <span>→</span>
-              <span className={step >= 2 ? 'text-[#0A266B] font-semibold' : ''}>
-                2. First Site
-              </span>
-              <span>→</span>
-              <span className={step >= 3 ? 'text-[#0A266B] font-semibold' : ''}>
-                3. Administrator
-              </span>
-            </div>
+        </div>
 
-            {step === 1 && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Organisation / Business Name
-                  </label>
-                  <div className="relative">
-                    <Building2 className="absolute left-3 top-3 text-slate-400" size={18} />
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Acme Logistics East Africa"
-                      value={formData.businessName}
-                      onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                      Country / Market
-                    </label>
-                    <select
-                      value={formData.country}
-                      onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                      className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white"
-                    >
-                      <option value="Kenya">Kenya (KES)</option>
-                      <option value="Uganda">Uganda (UGX)</option>
-                      <option value="Rwanda">Rwanda (RWF)</option>
-                      <option value="Burundi">Burundi (BIF)</option>
-                      <option value="International">International (USD)</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                      Expected Workforce Band
-                    </label>
-                    <select
-                      value={formData.expectedWorkers}
-                      onChange={(e) => setFormData({ ...formData, expectedWorkers: e.target.value })}
-                      className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white"
-                    >
-                      <option value="1–4">Starter (1–4)</option>
-                      <option value="5–9">Small (5–9)</option>
-                      <option value="10–19">Growing (10–19)</option>
-                      <option value="20–29">Business Standard (20–29)</option>
-                      <option value="30–49">Business Plus (30–49)</option>
-                      <option value="50–99">Business Pro (50–99)</option>
-                      <option value="100–199">Business Max (100–199)</option>
-                    </select>
-                  </div>
-                </div>
-
-                <p className="text-xs text-slate-500 bg-sky-50/60 p-3 rounded-lg border border-sky-100">
-                  Plans are based on the Workers who have joined your organisation in Klockit. Pending invitations do not count.
+        {/* Modal Scrollable Body */}
+        <div className="p-5 sm:p-6 overflow-y-auto flex-1 text-slate-900 space-y-4">
+          {/* STEP 1: Organisation Details */}
+          {step === 1 && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <div className="border-b border-slate-100 pb-2.5">
+                <h4 className="text-sm font-bold text-[#0A266B] flex items-center gap-2">
+                  <Building2 size={16} className="text-[#009FF5]" />
+                  <span>Business Information</span>
+                </h4>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Register your business identity, legal jurisdiction, and timezone for physical presence records.
                 </p>
               </div>
-            )}
 
-            {step === 2 && (
-              <div className="space-y-4">
+              <div className="space-y-3.5 text-xs">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    First Workplace / Site Name
+                  <label className="block font-semibold text-slate-700 mb-1">
+                    Business Name <span className="text-rose-500">*</span>
                   </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 text-slate-400" size={18} />
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Great Lakes Distribution Ltd"
+                    value={form.businessName}
+                    onChange={(e) => setForm({ ...form, businessName: e.target.value })}
+                    className={`w-full px-3 py-2 bg-slate-50 border rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white ${
+                      errors.businessName ? 'border-rose-400 bg-rose-50/40' : 'border-slate-200'
+                    }`}
+                  />
+                  {errors.businessName && <p className="text-[11px] text-rose-600 mt-1">{errors.businessName}</p>}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">
+                      Country / Market <span className="text-rose-500">*</span>
+                    </label>
+                    <select
+                      value={form.country}
+                      onChange={(e) => handleCountryChange(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white"
+                    >
+                      {COUNTRIES.map((c) => (
+                        <option key={c.code} value={c.name}>
+                          {c.name} ({c.currency})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">
+                      City / Locality <span className="text-rose-500">*</span>
+                    </label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Central Depot, Workshop #1, Head Office"
-                      value={formData.firstSiteName}
-                      onChange={(e) => setFormData({ ...formData, firstSiteName: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white"
+                      placeholder="e.g. Nairobi, Kigali, Kampala"
+                      value={form.city}
+                      onChange={(e) => setForm({ ...form, city: e.target.value })}
+                      className={`w-full px-3 py-2 bg-slate-50 border rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white ${
+                        errors.city ? 'border-rose-400 bg-rose-50/40' : 'border-slate-200'
+                      }`}
                     />
+                    {errors.city && <p className="text-[11px] text-rose-600 mt-1">{errors.city}</p>}
                   </div>
                 </div>
 
-                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-600 space-y-1.5">
-                  <div className="font-semibold text-slate-800">Sites in Klockit:</div>
-                  <p>
-                    A site can be an office, branch, workshop, construction location, or approved field reporting base. Your price is based on the number of workers in your organisation, not the number of Sites.
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">
+                      Organisation Time Zone <span className="text-rose-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Clock size={15} className="absolute left-3 top-2.5 text-slate-400" />
+                      <input
+                        type="text"
+                        readOnly
+                        value={form.timezone}
+                        className="w-full pl-8 pr-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-xs text-slate-700 font-mono"
+                      />
+                    </div>
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      Authoritative reference for all QR presence timestamps.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-slate-700 mb-1">
+                      Declared Workforce Size <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      required
+                      value={form.declaredWorkforceSize}
+                      onChange={(e) => setForm({ ...form, declaredWorkforceSize: e.target.value })}
+                      className={`w-full px-3 py-2 bg-slate-50 border rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white ${
+                        errors.declaredWorkforceSize ? 'border-rose-400 bg-rose-50/40' : 'border-slate-200'
+                      }`}
+                    />
+                    <p className="text-[10px] text-slate-500 mt-1">
+                      Declared size includes <strong>zero</strong> for entities establishing before hiring.
+                    </p>
+                    {errors.declaredWorkforceSize && (
+                      <p className="text-[11px] text-rose-600 mt-1">{errors.declaredWorkforceSize}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Preferred Language</label>
+                  <select
+                    value={form.preferredLanguage}
+                    onChange={(e) => setForm({ ...form, preferredLanguage: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white"
+                  >
+                    {LANGUAGES.map((lang) => (
+                      <option key={lang} value={lang}>
+                        {lang}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 2: Primary Business Contact */}
+          {step === 2 && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <div className="border-b border-slate-100 pb-2.5">
+                <h4 className="text-sm font-bold text-[#0A266B] flex items-center gap-2">
+                  <User size={16} className="text-[#009FF5]" />
+                  <span>Primary Business Contact</span>
+                </h4>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Point of contact for business correspondence, billing communications, and notices.
+                </p>
+              </div>
+
+              {/* Explicit Authority Separation Banner */}
+              <div className="p-3 bg-sky-50/80 border border-sky-100 rounded-xl flex items-start gap-2.5 text-xs text-sky-950">
+                <HelpCircle size={16} className="text-[#009FF5] shrink-0 mt-0.5" />
+                <div className="leading-relaxed">
+                  <span className="font-bold text-[#0A266B]">Contact details do not determine Administrator authority.</span>
+                  <p className="text-[11px] text-slate-600 mt-0.5">
+                    This contact provides business reachability. Platform governance authority is explicitly designated in Step 4.
                   </p>
                 </div>
               </div>
-            )}
 
-            {step === 3 && (
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Your Name (First Administrator)
+                  <label className="block font-semibold text-slate-700 mb-1">
+                    Contact Name <span className="text-rose-500">*</span>
                   </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-3 text-slate-400" size={18} />
-                    <input
-                      type="text"
-                      required
-                      placeholder="Full Name"
-                      value={formData.adminName}
-                      onChange={(e) => setFormData({ ...formData, adminName: e.target.value })}
-                      className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Fiona MacLeod"
+                    value={form.contactName}
+                    onChange={(e) => setForm({ ...form, contactName: e.target.value })}
+                    className={`w-full px-3 py-2 bg-slate-50 border rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white ${
+                      errors.contactName ? 'border-rose-400 bg-rose-50/40' : 'border-slate-200'
+                    }`}
+                  />
+                  {errors.contactName && <p className="text-[11px] text-rose-600 mt-1">{errors.contactName}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                    Work Email
+                  <label className="block font-semibold text-slate-700 mb-1">
+                    Role / Relationship to Business <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Managing Director, Operations Lead, Founder"
+                    value={form.contactRole}
+                    onChange={(e) => setForm({ ...form, contactRole: e.target.value })}
+                    className={`w-full px-3 py-2 bg-slate-50 border rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white ${
+                      errors.contactRole ? 'border-rose-400 bg-rose-50/40' : 'border-slate-200'
+                    }`}
+                  />
+                  {errors.contactRole && <p className="text-[11px] text-rose-600 mt-1">{errors.contactRole}</p>}
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">
+                    Email Address <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="email"
                     required
-                    placeholder="name@business.com"
-                    value={formData.adminEmail}
-                    onChange={(e) => setFormData({ ...formData, adminEmail: e.target.value })}
-                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white"
+                    placeholder="fiona@company.com"
+                    value={form.contactEmail}
+                    onChange={(e) => setForm({ ...form, contactEmail: e.target.value })}
+                    className={`w-full px-3 py-2 bg-slate-50 border rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white ${
+                      errors.contactEmail ? 'border-rose-400 bg-rose-50/40' : 'border-slate-200'
+                    }`}
                   />
+                  {errors.contactEmail && <p className="text-[11px] text-rose-600 mt-1">{errors.contactEmail}</p>}
                 </div>
 
-                <div className="flex items-start gap-2 pt-1 text-xs text-slate-500">
-                  <ShieldCheck size={16} className="text-emerald-600 shrink-0 mt-0.5" />
-                  <span>
-                    No credit card required. Your trial activates immediately upon registration.
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">
+                    Telephone Number <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="+254 700 000 000"
+                    value={form.contactPhone}
+                    onChange={(e) => setForm({ ...form, contactPhone: e.target.value })}
+                    className={`w-full px-3 py-2 bg-slate-50 border rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#009FF5] focus:bg-white ${
+                      errors.contactPhone ? 'border-rose-400 bg-rose-50/40' : 'border-slate-200'
+                    }`}
+                  />
+                  {errors.contactPhone && <p className="text-[11px] text-rose-600 mt-1">{errors.contactPhone}</p>}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 3: Subscription Information */}
+          {step === 3 && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <div className="border-b border-slate-100 pb-2.5 flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-bold text-[#0A266B] flex items-center gap-2">
+                    <CreditCard size={16} className="text-[#009FF5]" />
+                    <span>Subscription Information</span>
+                  </h4>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Commercial workforce plans in {currencyConfig.label}. Intended tier selection is optional.
+                  </p>
+                </div>
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  No Payment Required
+                </span>
+              </div>
+
+              {/* Automatic Evaluation Trial Notice */}
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1">
+                <div className="flex items-center gap-2 font-bold text-[#0A266B]">
+                  <Sparkles size={15} className="text-[#009FF5]" />
+                  <span>Approved 14-Day Evaluation Trial Included</span>
+                </div>
+                <p className="text-slate-600 text-[11px] leading-relaxed">
+                  Every new organisation begins with an automatic 14-day evaluation trial (up to 25 workers) with full presence features. Payment details are never a condition of establishing your business.
+                </p>
+                <p className="text-[10px] text-slate-400 mt-1 italic">
+                  Simulated commercial plan review for website prototype — no payment gateway or real transactions involved.
+                </p>
+              </div>
+
+              {/* Commercial Plans Grid (First 4 representative bands) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {PLAN_BANDS.slice(0, 4).map((plan) => {
+                  const isSelected = form.selectedPlanId === plan.id;
+                  const priceVal = plan.prices[currentCountry.currency];
+                  const formattedPrice = currencyConfig.format(priceVal);
+
+                  return (
+                    <div
+                      key={plan.id}
+                      onClick={() => setForm({ ...form, selectedPlanId: plan.id })}
+                      className={`cursor-pointer rounded-xl border p-3 text-xs transition-all flex flex-col justify-between ${
+                        isSelected
+                          ? 'border-[#009FF5] bg-sky-50/40 ring-2 ring-[#009FF5]/20 shadow-2xs'
+                          : 'border-slate-200 hover:border-slate-300 bg-white'
+                      }`}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-slate-900">{plan.name}</span>
+                          <input
+                            type="radio"
+                            name="planBand"
+                            checked={isSelected}
+                            onChange={() => setForm({ ...form, selectedPlanId: plan.id })}
+                            className="w-3.5 h-3.5 text-[#009FF5]"
+                          />
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-base font-black text-[#0A266B]">{formattedPrice}</span>
+                          <span className="text-[11px] text-slate-500">/ month</span>
+                        </div>
+                        <div className="inline-block px-1.5 py-0.5 rounded bg-slate-100 font-semibold text-[10px] text-slate-700">
+                          {plan.workersLabel}
+                        </div>
+                        <p className="text-[11px] text-slate-600 line-clamp-2 mt-1">{plan.description}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Default "Decide Later" Option */}
+              <div
+                onClick={() => setForm({ ...form, selectedPlanId: 'decide_later' })}
+                className={`p-3 rounded-xl border cursor-pointer text-xs flex items-center justify-between ${
+                  form.selectedPlanId === 'decide_later'
+                    ? 'border-[#009FF5] bg-sky-50/50 ring-2 ring-[#009FF5]/20'
+                    : 'border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className="space-y-0.5">
+                  <div className="font-bold text-[#0A266B] flex items-center gap-2">
+                    <span>Decide later during evaluation trial (Default)</span>
+                    <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.2 rounded-full border border-emerald-200">
+                      Recommended
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-500">
+                    Explore attendance operations with 14 days full access. Select an ongoing plan whenever you are ready.
+                  </p>
+                </div>
+                <input
+                  type="radio"
+                  name="planBand"
+                  checked={form.selectedPlanId === 'decide_later'}
+                  onChange={() => setForm({ ...form, selectedPlanId: 'decide_later' })}
+                  className="w-4 h-4 text-[#009FF5]"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* STEP 4: Administrator Identity & Legal Authority */}
+          {step === 4 && (
+            <div className="space-y-4 animate-in fade-in duration-150">
+              <div className="border-b border-slate-100 pb-2.5">
+                <h4 className="text-sm font-bold text-[#0A266B] flex items-center gap-2">
+                  <ShieldCheck size={16} className="text-[#009FF5]" />
+                  <span>Administrator Identity & Authority</span>
+                </h4>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Designate the initial Administrator and execute the approved legal authority declaration.
+                </p>
+              </div>
+
+              {/* Authenticated Registrant Context */}
+              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#0A266B] text-white font-bold flex items-center justify-center text-xs">
+                      TK
+                    </div>
+                    <div>
+                      <p className="font-bold text-xs text-slate-900">Authenticated Registrant</p>
+                      <p className="text-[11px] text-slate-600">
+                        {form.administratorName} · <span className="font-mono text-slate-500">{form.administratorEmail}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                    Verified Session
+                  </span>
+                </div>
+
+                <div className="pt-2.5 border-t border-slate-200">
+                  <label className="flex items-start gap-2.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={form.isRegistrantDesignatedAdmin}
+                      onChange={(e) => setForm({ ...form, isRegistrantDesignatedAdmin: e.target.checked })}
+                      className="w-4 h-4 text-[#009FF5] rounded focus:ring-[#009FF5] mt-0.5"
+                    />
+                    <div className="text-xs">
+                      <span className="font-bold text-slate-900">
+                        Explicitly designate authenticated registrant as First Administrator
+                      </span>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        Confers governance authority over workforce registration, site QR management, and attendance verification.
+                        Contact details do not determine authority.
+                      </p>
+                    </div>
+                  </label>
+                  {errors.isRegistrantDesignatedAdmin && (
+                    <p className="text-[11px] text-rose-600 mt-1 pl-6">{errors.isRegistrantDesignatedAdmin}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Approved Authority Declaration Box */}
+              <div className="p-3.5 bg-sky-50/60 rounded-xl border border-sky-100 space-y-2.5">
+                <div className="flex items-center gap-2 text-[#0A266B] font-bold text-xs">
+                  <FileCheck2 size={16} className="text-[#009FF5]" />
+                  <span>Approved Authority Declaration</span>
+                </div>
+                <div className="p-3 bg-white rounded-lg border border-sky-100 text-xs text-slate-700 leading-relaxed font-sans space-y-1.5 max-h-36 overflow-y-auto">
+                  <p className="font-bold text-slate-900">
+                    Declaration of Lawful Authority:
+                  </p>
+                  <p>
+                    I hereby declare and warrant that I am duly authorised by{' '}
+                    <span className="font-bold text-slate-900 underline">{form.businessName || 'the organisation'}</span> to
+                    register this business with Klockit, to designate its initial Administrator, and to agree to the Klockit Terms of Service.
+                  </p>
+                  <p>
+                    I acknowledge that Klockit is dedicated strictly to physical work presence and attendance verification.
+                    Attendance evidence is recorded honestly through physical QR verification and managed exceptions.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="flex items-start gap-2.5 cursor-pointer pt-1">
+                    <input
+                      type="checkbox"
+                      checked={form.authorityAccepted}
+                      onChange={(e) => setForm({ ...form, authorityAccepted: e.target.checked })}
+                      className="w-4 h-4 text-[#009FF5] rounded focus:ring-[#009FF5] mt-0.5"
+                    />
+                    <span className="text-xs font-bold text-[#0A266B]">
+                      I accept this authority declaration on behalf of {form.businessName || 'this business'} <span className="text-rose-500">*</span>
+                    </span>
+                  </label>
+                  {errors.authorityAccepted && (
+                    <p className="text-[11px] text-rose-600 mt-1 pl-6">{errors.authorityAccepted}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 5: Completion & Handover */}
+          {step === 5 && (
+            <div className="space-y-5 text-center py-3 animate-in zoom-in-95 duration-200">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center shadow-inner">
+                <CheckCircle2 size={32} />
+              </div>
+
+              <div>
+                <h4 className="text-lg font-black text-[#0A266B]">Organisation Established</h4>
+                <p className="text-xs text-slate-500 mt-1">
+                  Klockit reference generated and approved 14-day evaluation trial automatically activated.
+                </p>
+              </div>
+
+              <div className="max-w-md mx-auto bg-slate-50 border border-slate-200 rounded-xl p-4 text-left space-y-2.5 text-xs">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                  <span className="text-slate-500 font-medium">Organisation Reference:</span>
+                  <span className="font-mono font-black text-[#0A266B] bg-sky-50 px-2 py-0.5 rounded border border-sky-200 text-xs">
+                    {generatedRef}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">Business Name:</span>
+                  <span className="font-bold text-slate-900">{form.businessName}</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">Jurisdiction & Timezone:</span>
+                  <span className="font-medium text-slate-700">
+                    {form.city}, {form.country} ({form.timezone.split(' ')[0]})
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">Declared Workforce:</span>
+                  <span className="font-medium text-slate-700">{form.declaredWorkforceSize} Workers</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">Designated Administrator:</span>
+                  <span className="font-bold text-slate-900">{form.administratorName}</span>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+                  <span className="text-slate-500">Trial Status:</span>
+                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    Active Evaluation Trial (14 Days)
                   </span>
                 </div>
               </div>
-            )}
 
-            {/* Actions */}
-            <div className="pt-2 flex items-center justify-between gap-3">
-              {step > 1 ? (
+              <div className="pt-2 space-y-2">
                 <button
-                  type="button"
-                  onClick={() => setStep((s) => (s - 1) as 1 | 2)}
-                  className="px-4 py-2.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+                  id="btn-enter-business"
+                  onClick={handleReset}
+                  className="w-full max-w-md mx-auto py-3 bg-[#0A266B] hover:bg-[#071c4f] text-white font-bold text-sm rounded-xl shadow-md transition-transform active:scale-98 flex items-center justify-center gap-2"
                 >
-                  Back
+                  <span>Enter Business</span>
+                  <ArrowRight size={16} />
                 </button>
-              ) : (
-                <span />
-              )}
-
-              <button
-                type="submit"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0A266B] hover:bg-[#071c4f] text-white text-xs font-semibold rounded-xl transition-colors shadow-xs"
-              >
-                <span>{step === 3 ? 'Activate 14-Day Free Trial' : 'Continue'}</span>
-                <ArrowRight size={14} />
-              </button>
+                <p className="text-[11px] text-slate-400 text-center max-w-sm mx-auto">
+                  Simulated onboarding completion. In production, this completes registration and directs the authenticated Administrator into their initial workspace.
+                </p>
+              </div>
             </div>
-          </form>
+          )}
+        </div>
+
+        {/* Modal Footer Navigation (Steps 1 to 4) */}
+        {step < 5 && (
+          <div className="px-5 sm:px-6 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+            <button
+              onClick={handleBack}
+              disabled={step === 1}
+              className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors ${
+                step === 1
+                  ? 'text-slate-300 cursor-not-allowed'
+                  : 'text-slate-700 hover:bg-slate-200/70 border border-slate-300'
+              }`}
+            >
+              <ArrowLeft size={14} />
+              <span>Back</span>
+            </button>
+
+            <div className="text-[11px] text-slate-400">Step {step} of 4</div>
+
+            <button
+              id={`onboarding-step-${step}-next`}
+              onClick={handleNext}
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#0A266B] hover:bg-[#071c4f] text-white text-xs font-bold rounded-lg shadow-2xs transition-colors"
+            >
+              <span>{step === 4 ? 'Confirm & Establish' : 'Continue'}</span>
+              <ArrowRight size={14} />
+            </button>
+          </div>
         )}
       </div>
     </div>
